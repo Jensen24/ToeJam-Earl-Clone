@@ -2,22 +2,22 @@
 
 public class GameManager
 {
-	//private Food _food;
+	private Present _present;
 	private ToeJam _toeJam;
 	public void Init ()
 	{
-		//_food = new(new(300,300));
+		_present = new();
 		_toeJam = new();
 	}
 	public void Update(GameTime gameTime)
 	{
 		InputManager.Update();
-		//_food.Update();
+		_present.Update();
 		_toeJam.Update(gameTime);
 	}
 	public void Draw()
 	{
-		//_food.Draw();
-        _toeJam.Draw(Globals.SpriteBatch);
-    }
+		_present.Draw(Globals.SpriteBatch);
+		_toeJam.Draw(Globals.SpriteBatch);
+	}
 }
