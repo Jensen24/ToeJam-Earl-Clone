@@ -52,11 +52,11 @@ public class ToeJam
             new Rectangle(370, 131, 25, 29),
             new Rectangle(407, 132, 20, 28),
         };
-        _anims.AddAnimation("Idle", new Animation(toeJam, idle, 0.15f));
-        _anims.AddAnimation("Down", new Animation(toeJam, walkDown, 0.15f));
-        _anims.AddAnimation("Up", new Animation(toeJam, walkUp, 0.15f));
-        _anims.AddAnimation("Left", new Animation(toeJam, walkLeft, 0.15f));
-        _anims.AddAnimation("Right", new Animation(toeJam, walkRight, 0.15f));
+        _anims.AddAnimation("Idle", new Animation(toeJam, idle, 0.30f));
+        _anims.AddAnimation("Down", new Animation(toeJam, walkDown, 0.20f));
+        _anims.AddAnimation("Up", new Animation(toeJam, walkUp, 0.20f));
+        _anims.AddAnimation("Left", new Animation(toeJam, walkLeft, 0.20f));
+        _anims.AddAnimation("Right", new Animation(toeJam, walkRight, 0.20f));
     }
     private string GetAnimKeyFromDirection(Vector2 direction)
     {

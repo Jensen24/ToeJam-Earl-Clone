@@ -9,14 +9,16 @@ public class Animation
     private int _frame;
     private readonly float _frameTime;
     private float _frameTimeLeft;
+    private Vector2 _scale = Vector2.One;
     private bool _active = true;
 
-	public Animation(Texture2D texture, List<Rectangle> sourceRectangles, float frameTime)
+	public Animation(Texture2D texture, List<Rectangle> sourceRectangles, float frameTime, Vector2? scale = null)
     {
         _texture = texture;
         _sourceRectangles = sourceRectangles;
         _frames = sourceRectangles.Count;
         _frameTime = frameTime;
+        _scale = scale ?? Vector2.One;
     }
 
     public void Stop()
@@ -45,6 +47,6 @@ public class Animation
     }
     public void Draw(Vector2 pos)
     {
-        Globals.SpriteBatch.Draw(_texture, pos, _sourceRectangles[_frame], Color.White, 0, Vector2.Zero, Vector2.One, SpriteEffects.None, 1);
+        Globals.SpriteBatch.Draw(_texture, pos, _sourceRectangles[_frame], Color.White, 0f, Vector2.Zero, _scale, SpriteEffects.None, 1);
     }
 }

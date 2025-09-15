@@ -4,30 +4,30 @@ using System.Collections.Generic;
 public class AnimationManager
 {
     private Dictionary<object, Animation> _anims = new();
-    private object _lastKey;
+    private object _lastFrame;
 
-    public void AddAnimation(object key, Animation animation)
+    public void AddAnimation(object frame, Animation animation)
     {
-        _anims.Add(key, animation);
-        _lastKey ??= key;
+        _anims.Add(frame, animation);
+        _lastFrame ??= frame;
     }
-    public void Update(object key, GameTime gameTime)
+    public void Update(object frame, GameTime gameTime)
     {
-        if (_anims.TryGetValue(key, out Animation anim))
+        if (_anims.TryGetValue(frame, out Animation anim))
         {
             anim.Start();
             anim.Update();
-            _lastKey = key;
+            _lastFrame = frame;
         }
-        else if (_lastKey != null)
+        else if (_lastFrame != null)
         {
-            _anims[_lastKey].Stop();
-            _anims[_lastKey].Reset();
+            _anims[_lastFrame].Stop();
+            _anims[_lastFrame].Reset();
         }
     }
     public void Draw(SpriteBatch spriteBatch, Vector2 position)
     {
-        if (_lastKey != null)
-            _anims[_lastKey].Draw(position);
+        if (_lastFrame != null)
+            _anims[_lastFrame].Draw(position);
     }
 }

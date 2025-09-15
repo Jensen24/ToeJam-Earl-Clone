@@ -4,7 +4,8 @@ namespace ToeJam_Earl
     public class Game1 : Game
     {
         private GameManager _gameManager;
-        private GraphicsDeviceManager _graphics;
+        private TileManager _tileManager;
+        private readonly GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
         public Game1()
@@ -34,6 +35,9 @@ namespace ToeJam_Earl
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             Globals.SpriteBatch = _spriteBatch;
+            Texture2D tileset = Content.Load<Texture2D>("Island");
+            Tiles tiles = new Tiles(tileset);
+            _tileManager = new TileManager(tiles, 8);
 
             // TODO: use this.Content to load your game content here
         }
@@ -57,6 +61,7 @@ namespace ToeJam_Earl
             // TODO: Add your drawing code here
 
             _spriteBatch.Begin();
+            _tileManager.Draw(_spriteBatch);
             _gameManager.Draw();
             _spriteBatch.End();
 

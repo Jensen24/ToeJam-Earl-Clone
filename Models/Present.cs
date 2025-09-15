@@ -1,26 +1,30 @@
 ﻿using System;
+using System.Collections.Generic;
 
 public class Present
 {
-    private Vector2 _position = new(200, 200);
+    private Vector2 _position = new(300, 300);
     private AnimationManager _anims = new();
-    public ToeJam()
+    public Present()
     {
         Texture2D present = Globals.Content.Load<Texture2D>("Items");
 
         var idle = new List<Rectangle>
         {
-            new Rectangle(137, 10, 15, 14),
+            new Rectangle(5, 12, 22, 12),
+            new Rectangle(106, 12, 12, 12),
+            new Rectangle(69, 14, 24, 10),
         };
-        _anims.AddAnimation("Idle", new Animation(present, idle, 0.15f));
+        _anims.AddAnimation("Idle", new Animation(present, idle, 0.85f));
+    }
 
-    public void Update()
-	{
-		_anim.Update();
-	}
+    public void Update(GameTime gameTime)
+    {
+        _anims.Update("Idle", gameTime);
+    }
 
-	public void Draw(SpriteBatch spriteBatch)
-	{
-		_anim.Draw(spriteBatch, _position);
-	}
+    public void Draw(SpriteBatch spriteBatch)
+    {
+        _anims.Draw(spriteBatch, _position);
+    }
 }
