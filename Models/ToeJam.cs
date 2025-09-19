@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections.Generic;
 
 public class ToeJam
@@ -52,28 +53,78 @@ public class ToeJam
             new Rectangle(370, 131, 25, 29),
             new Rectangle(407, 132, 20, 28),
         };
+        var sneakUp = new List<Rectangle>
+        {
+            new Rectangle(24, 249, 17, 24),
+            new Rectangle(52, 247, 17, 28),
+            new Rectangle(82, 247, 17, 25),
+
+        };
+        var sneakDown = new List<Rectangle>
+        {
+            new Rectangle(26, 204, 18, 28),
+            new Rectangle(54, 204, 18, 25),
+            new Rectangle(85, 204, 18, 24),
+
+        };
+        var sneakRight = new List<Rectangle>
+        {
+            new Rectangle(132, 247, 14, 21),
+            new Rectangle(157, 246, 14, 23),
+            new Rectangle(183, 244, 14, 24),
+
+        };
+        var sneakLeft = new List<Rectangle>
+        {
+            new Rectangle(133, 202, 14, 25),
+            new Rectangle(158, 204, 15, 23),
+            new Rectangle(184, 205, 15, 21),
+
+        };
         _anims.AddAnimation("Idle", new Animation(toeJam, idle, 0.30f));
         _anims.AddAnimation("Down", new Animation(toeJam, walkDown, 0.20f));
         _anims.AddAnimation("Up", new Animation(toeJam, walkUp, 0.20f));
         _anims.AddAnimation("Left", new Animation(toeJam, walkLeft, 0.20f));
         _anims.AddAnimation("Right", new Animation(toeJam, walkRight, 0.20f));
+        // Sneak
+        _anims.AddAnimation("sneakDown", new Animation(toeJam, sneakDown, 0.20f));
+        _anims.AddAnimation("sneakUp", new Animation(toeJam, sneakUp, 0.20f));
+        _anims.AddAnimation("sneakLeft", new Animation(toeJam, sneakLeft, 0.20f));
+        _anims.AddAnimation("sneakRight", new Animation(toeJam, sneakRight, 0.20f));
     }
-    private string GetAnimKeyFromDirection(Vector2 direction)
+    private string GetAnimKeyFromDirection(Vector2 direction, bool sneaking)
     {
-        if (direction.Y > 0) return "Down";
-        if (direction.Y < 0) return "Up";
-        if (direction.X < 0) return "Left";
-        if (direction.X > 0) return "Right";
-        return "Idle";
-
+        if (sneaking)
+        {
+            if (direction.Y > 0) return "sneakDown";
+            if (direction.Y < 0) return "sneakUp";
+            if (direction.X < 0) return "sneakLeft";
+            if (direction.X > 0) return "sneakRight";
+            return "Idle";
+        }
+        else
+        {
+            if (direction.Y > 0) return "Down";
+            if (direction.Y < 0) return "Up";
+            if (direction.X < 0) return "Left";
+            if (direction.X > 0) return "Right";
+            return "Idle";
+        }
     }
 	public void Update(GameTime gameTime)
 	{
+        if (GameState.Paused) return;
+
+        // Arrow Keys: Movement
+        bool sneaking = InputManager.SneakHeld;
+
 		if (InputManager.Moving)
 		{
+            float moveSpeed = sneaking ? _speed * 0.5f : _speed; // If sneaking is held, speed is halfed then returned
 			_position += Vector2.Normalize(InputManager.Direction) * _speed * Globals.TotalSeconds;
 		}
-        string key = GetAnimKeyFromDirection(InputManager.Direction);
+
+        string key = GetAnimKeyFromDirection(InputManager.Direction, sneaking);
 		_anims.Update(key, gameTime);
 	}
 

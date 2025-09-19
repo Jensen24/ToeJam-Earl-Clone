@@ -8,6 +8,7 @@ namespace ToeJam_Earl
         private readonly GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -47,10 +48,39 @@ namespace ToeJam_Earl
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
             Globals.Update(gameTime);
-            _gameManager.Update(gameTime);
+            InputManager.Update();
 
+            if (InputManager.PausePressed)
+            {
+                GameState.TogglePause();
+            }
+            if (GameState.Paused)
+            {
+                return;
+            }
+            if (InputManager.OpenPresentsPressed)
+            {
+                GameState.TogglePresents();
+            }
+            if (InputManager.ToggleMapPressed)
+            {
+                GameState.ToggleMap();
+            }
+            if (!GameState.PresentsOpen && !GameState.MapOpen && InputManager.UsePresentPressed)
+            {
+                System.Diagnostics.Debug.WriteLine("Present Used");
+            }
+            if (GameState.PresentsOpen && InputManager.ConfirmPressed)
+            {
+                System.Diagnostics.Debug.WriteLine("Selection Confirmed");
+            }
+            if (InputManager.SneakHeld)
+            {
+                System.Diagnostics.Debug.WriteLine("Sneak Activated");
+            }
+
+            _gameManager.Update(gameTime);
             base.Update(gameTime);
         }
 

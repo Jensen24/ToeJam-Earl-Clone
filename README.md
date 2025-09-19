@@ -9,6 +9,8 @@
 ### https://www.youtube.com/watch?v=DnWvmI1qBAs&ab_channel=LioncatDevStudio
 ### https://www.youtube.com/watch?v=hm4PkqS2bqY&ab_channel=GameDevQuickie
 ###
+# Input Sources:
+### https://www.youtube.com/watch?v=Bq3bpveTMh4
 # General Sources:
 ###  Game Programming Algorithms and Techniques: A Platform-Agnostic Approach (Game Design) written by Sanjay Madhav
 ### https://docs.monogame.net/articles/tutorials/building_2d_games/
