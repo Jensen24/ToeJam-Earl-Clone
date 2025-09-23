@@ -121,7 +121,7 @@ public class ToeJam
 		if (InputManager.Moving)
 		{
             float moveSpeed = sneaking ? _speed * 0.5f : _speed; // If sneaking is held, speed is halfed then returned
-			_position += Vector2.Normalize(InputManager.Direction) * _speed * Globals.TotalSeconds;
+			_position += Vector2.Normalize(InputManager.Direction) * moveSpeed * Globals.TotalSeconds;
 		}
 
         string key = GetAnimKeyFromDirection(InputManager.Direction, sneaking);

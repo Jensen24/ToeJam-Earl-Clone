@@ -14,11 +14,13 @@ public static class GameState
 	public static void TogglePresents()
 	{
         PresentsOpen = !PresentsOpen;
+        Paused = PresentsOpen;
         System.Diagnostics.Debug.WriteLine(PresentsOpen ? "Presents Menu Opened" : "Presents Menu Closed");
     }
     public static void ToggleMap()
     {
         MapOpen = !MapOpen;
+        Paused = MapOpen;
         System.Diagnostics.Debug.WriteLine(MapOpen ? "Map Opened" : "Map Closed");
     }
 }

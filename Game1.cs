@@ -51,29 +51,42 @@ namespace ToeJam_Earl
             Globals.Update(gameTime);
             InputManager.Update();
 
+            // Land of 'If' 
             if (InputManager.PausePressed)
             {
                 GameState.TogglePause();
+            }
+            if (GameState.PresentsOpen)
+            {
+                if (InputManager.ConfirmPressed)
+                    System.Diagnostics.Debug.WriteLine("Selection Confirmed");
+
+                if (InputManager.UsePresentPressed)
+                    System.Diagnostics.Debug.WriteLine("Present Used");
+
+                if (InputManager.TogglePresentsPressed)
+                    GameState.TogglePresents();
+
+                    return;
+            }
+            if (GameState.MapOpen)
+            {
+                if (InputManager.ToggleMapPressed)
+                    GameState.ToggleMap();
+
+                    return;
             }
             if (GameState.Paused)
             {
                 return;
             }
-            if (InputManager.OpenPresentsPressed)
+            if (InputManager.TogglePresentsPressed)
             {
                 GameState.TogglePresents();
             }
             if (InputManager.ToggleMapPressed)
             {
                 GameState.ToggleMap();
-            }
-            if (!GameState.PresentsOpen && !GameState.MapOpen && InputManager.UsePresentPressed)
-            {
-                System.Diagnostics.Debug.WriteLine("Present Used");
-            }
-            if (GameState.PresentsOpen && InputManager.ConfirmPressed)
-            {
-                System.Diagnostics.Debug.WriteLine("Selection Confirmed");
             }
             if (InputManager.SneakHeld)
             {
