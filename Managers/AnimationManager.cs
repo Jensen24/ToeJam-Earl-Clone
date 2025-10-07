@@ -25,9 +25,9 @@ public class AnimationManager
             _anims[_lastFrame].Reset();
         }
     }
-    public void Draw(SpriteBatch spriteBatch, Vector2 position)
+    public void Draw(SpriteBatch spriteBatch, Vector2 position, float rotation = 0f)
     {
         if (_lastFrame != null)
-            _anims[_lastFrame].Draw(position);
+            _anims[_lastFrame].Draw(position, rotation);
     }
 }

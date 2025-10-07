@@ -4,6 +4,8 @@ using System.Collections.Generic;
 public class Elevator
 {
     private Vector2 _position = new(450, 300);
+    public Vector2 ElevatorPosition => _position;
+    private float _scale = 1.5f;
     private AnimationManager _anims = new();
     public Elevator()
     {
@@ -20,7 +22,7 @@ public class Elevator
             new Rectangle(292, 134, 32, 54),
             new Rectangle(340, 134, 32, 54),
         };
-        _anims.AddAnimation("Buffer", new Animation(elevator, buffer, 0.15f));
+        _anims.AddAnimation("Buffer", new Animation(elevator, buffer, 0.15f, new Vector2(_scale, _scale)));
     }
 
     public void Update(GameTime gameTime)

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 
 public class madDentist
 {
-    private Vector2 _position = new(350, 300);
+    private Vector2 _position = new(400, 450);
+    public Vector2 DentistPosition => _position;
+    private float _scale = 1.5f;
     private AnimationManager _anims = new();
     public madDentist()
     {
@@ -20,7 +22,7 @@ public class madDentist
             new Rectangle(291, 141, 25, 35),
             new Rectangle(340, 141, 25, 35),
         };
-        _anims.AddAnimation("Down", new Animation(dentist, walkDown, 0.15f));
+        _anims.AddAnimation("Down", new Animation(dentist, walkDown, 0.15f, new Vector2(_scale, _scale)));
     }
 
     public void Update(GameTime gameTime)

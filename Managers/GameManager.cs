@@ -8,7 +8,8 @@ public class GameManager
 	private Wiseman _wiseman;
 	private Elevator _elevator;
 	private UI _ui;
-	public void Init ()
+    private InteractionManager _interactionManager;
+    public void Init ()
 	{
 		_present = new();
 		_toeJam = new();
@@ -16,6 +17,7 @@ public class GameManager
 		_wiseman = new Wiseman();
 		_elevator = new Elevator();
 		_ui = new UI();
+        _interactionManager = new InteractionManager(_toeJam, _dentist, _present);
     }
 	public void Update(GameTime gameTime)
 	{
@@ -26,6 +28,7 @@ public class GameManager
 		_wiseman.Update(gameTime);
 		_elevator.Update(gameTime);
 		_ui.Update(gameTime);
+        _interactionManager.Update();
     }
 	public void Draw()
 	{

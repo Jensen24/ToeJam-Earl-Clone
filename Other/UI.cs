@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class UI
 {
-    private Vector2 _position = new(0, 675);
+    private Vector2 _position = new(512, 720);
     private AnimationManager _anims = new();
     public UI()
     {

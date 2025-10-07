@@ -103,7 +103,7 @@ namespace ToeJam_Earl
 
             // TODO: Add your drawing code here
 
-            _spriteBatch.Begin();
+            _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
             _tileManager.Draw(_spriteBatch);
             _gameManager.Draw();
             _spriteBatch.End();

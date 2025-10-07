@@ -5,7 +5,9 @@ using System.Collections.Generic;
 public class ToeJam
 {
 	private Vector2 _position = new(100, 100);
-	private float _speed = 200f;
+    public Vector2 PlayerPosition => _position;
+    private float _speed = 200f;
+    private float _scale = 1.5f;
 	private AnimationManager _anims = new();
 	public ToeJam()
 	{
@@ -81,16 +83,16 @@ public class ToeJam
             new Rectangle(184, 205, 15, 21),
 
         };
-        _anims.AddAnimation("Idle", new Animation(toeJam, idle, 0.30f));
-        _anims.AddAnimation("Down", new Animation(toeJam, walkDown, 0.20f));
-        _anims.AddAnimation("Up", new Animation(toeJam, walkUp, 0.20f));
-        _anims.AddAnimation("Left", new Animation(toeJam, walkLeft, 0.20f));
-        _anims.AddAnimation("Right", new Animation(toeJam, walkRight, 0.20f));
+        _anims.AddAnimation("Idle", new Animation(toeJam, idle, 0.30f, new Vector2(_scale, _scale)));
+        _anims.AddAnimation("Down", new Animation(toeJam, walkDown, 0.20f, new Vector2(_scale, _scale)));
+        _anims.AddAnimation("Up", new Animation(toeJam, walkUp, 0.20f, new Vector2(_scale, _scale)));
+        _anims.AddAnimation("Left", new Animation(toeJam, walkLeft, 0.20f, new Vector2(_scale, _scale)));
+        _anims.AddAnimation("Right", new Animation(toeJam, walkRight, 0.20f, new Vector2(_scale, _scale)));
         // Sneak
-        _anims.AddAnimation("sneakDown", new Animation(toeJam, sneakDown, 0.20f));
-        _anims.AddAnimation("sneakUp", new Animation(toeJam, sneakUp, 0.20f));
-        _anims.AddAnimation("sneakLeft", new Animation(toeJam, sneakLeft, 0.20f));
-        _anims.AddAnimation("sneakRight", new Animation(toeJam, sneakRight, 0.20f));
+        _anims.AddAnimation("sneakDown", new Animation(toeJam, sneakDown, 0.20f, new Vector2(_scale, _scale)));
+        _anims.AddAnimation("sneakUp", new Animation(toeJam, sneakUp, 0.20f, new Vector2(_scale, _scale)));
+        _anims.AddAnimation("sneakLeft", new Animation(toeJam, sneakLeft, 0.20f, new Vector2(_scale, _scale)));
+        _anims.AddAnimation("sneakRight", new Animation(toeJam, sneakRight, 0.20f, new Vector2(_scale, _scale)));
     }
     private string GetAnimKeyFromDirection(Vector2 direction, bool sneaking)
     {
@@ -121,7 +123,7 @@ public class ToeJam
 		if (InputManager.Moving)
 		{
             float moveSpeed = sneaking ? _speed * 0.5f : _speed; // If sneaking is held, speed is halfed then returned
-			_position += Vector2.Normalize(InputManager.Direction) * moveSpeed * Globals.TotalSeconds;
+            _position += Vector2.Normalize(InputManager.Direction) * moveSpeed * Globals.TotalSeconds;
 		}
 
         string key = GetAnimKeyFromDirection(InputManager.Direction, sneaking);
