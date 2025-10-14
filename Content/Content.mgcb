@@ -13,6 +13,18 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin Alien Break Down.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Alien Break Down.mp3
+
+#begin Big Earl Bump.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Big Earl Bump.mp3
+
 #begin Dentist.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -24,6 +36,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Dentist.png
+
+#begin Elevator Beats.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Elevator Beats.mp3
 
 #begin Elevator.png
 /importer:TextureImporter
@@ -48,6 +66,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Flooring.png
+
+#begin Funkotronic Beat.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Funkotronic Beat.mp3
 
 #begin HUD.png
 /importer:TextureImporter
@@ -85,6 +109,24 @@
 /processorParam:TextureFormat=Color
 /build:Items.png
 
+#begin Rapmaster Rocket Racket.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Rapmaster Rocket Racket.mp3
+
+#begin ToeJam Jammin'.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:ToeJam Jammin'.mp3
+
+#begin ToeJam Slowjam.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:ToeJam Slowjam.mp3
+
 #begin ToeJam.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -108,4 +150,10 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Wiseman.png
+
+#begin Yeouch! (ToeJam).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Yeouch! (ToeJam).wav
 
