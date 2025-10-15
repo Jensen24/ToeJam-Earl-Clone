@@ -1,5 +1,5 @@
 # ToeJam&Earl Clone
-## This repository houses my ToeJam&Earl Clone that will serves as my final project for Video Game Development 1.
+### This repository houses my ToeJam&Earl Clone that will serves as my final project for Video Game Development 1.
 ### Due to the scale of this project, a lot of research is put into learning the process of writing code so each source will be sited below.
 # Sprite/TileMaps Sources: 
 ### https://www.youtube.com/watch?v=GFYY0gg9Kuc&ab_channel=CodingwithSphere
@@ -11,6 +11,11 @@
 ###
 # Input Sources:
 ### https://www.youtube.com/watch?v=Bq3bpveTMh4
+# Audio Sources:
+### https://docs.monogame.net/articles/tutorials/building_2d_games/14_soundeffects_and_music/index.html
+### https://docs.monogame.net/api/Microsoft.Xna.Framework.Media.MediaPlayer.html
+# AI/Collision Sources:
+### https://docs.monogame.net/articles/tutorials/building_2d_games/12_collision_detection/index.html
 # General Sources:
 ###  Game Programming Algorithms and Techniques: A Platform-Agnostic Approach (Game Design) written by Sanjay Madhav
 ### https://docs.monogame.net/articles/tutorials/building_2d_games/

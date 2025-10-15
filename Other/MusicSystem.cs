@@ -1,22 +1,23 @@
 ﻿using System;
-using System.Net.Mime;
-using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework.Media;
 
 public class MusicSystem
 {
-	SongCollection playlist = new SongCollection();
+	public List<Song> playlist = new List<Song>();
+	private int currentIndex = 0;
 	public MusicSystem()
 	{
-		Song ABD = Globals.Content.Load("Alien Break Down.mp3");
-		Song BEB = Globals.Content.Load("Big Earl Bump.mp3");
-		Song FB = Globals.Content.Load("Funkotronic Beat.mp3");
-		Song RRR = Globals.Content.Load("Rapmaster Rocket Racket.mp3");
-		Song TJ = Globals.Content.Load("ToeJam Jammin'.mp3");
-		Song TS = Globals.Content.Load("ToeJam Slowjam.mp3");
+		Song ABD = Globals.Content.Load<Song>("Alien Break Down");
+		Song BEB = Globals.Content.Load<Song>("Big Earl Bump");
+		Song FB = Globals.Content.Load<Song>("Funkotronic Beat");
+		Song RRR = Globals.Content.Load<Song>("Rapmaster Rocket Racket");
+		Song TJ = Globals.Content.Load<Song>("ToeJam Jammin'");
+		Song TS = Globals.Content.Load<Song>("ToeJam Slowjam");
 
-		playlist.Add(ABD, BEB, FB, RRR, TJ, TS);
+		playlist.AddRange([ABD, BEB, FB, RRR, TJ, TS]);
 	}
-
+	// Shuffle song order
 	public void ShuffleSongs()
 	{
 		Random random = new Random();
@@ -29,5 +30,60 @@ public class MusicSystem
 			playlist[k] = playlist[n];
 			playlist[n] = value;
 		}
+	}
+	// Starts playlist
+	public void Play()
+	{
+		if (playlist.Count == 0)
+			return;
+		currentIndex = 0;
+		CurrentSong();
+	}
+    // Loop feature, also plays @ start
+    public void CurrentSong()
+    {
+		if (currentIndex >= playlist.Count)
+			currentIndex = 0;
+
+		MediaPlayer.Stop();
+		MediaPlayer.IsRepeating = false;
+		MediaPlayer.Play(playlist[currentIndex]);
+    }
+    // Stops Music
+    public void Stop()
+	{
+		MediaPlayer.Stop();
+	}
+	// Pauses music (alter in game1 so pause menu = pause music)
+	public void Pause()
+	{
+		if (MediaPlayer.State == MediaState.Playing)
+			MediaPlayer.Pause();
+	}
+	// Continues Music
+	public void Resume()
+	{
+		if (MediaPlayer.State == MediaState.Playing)
+			MediaPlayer.Resume();
+    }
+    // Volume 
+    public void SetVolume(float volume)
+	{
+		MediaPlayer.Volume = MathHelper.Clamp(volume, 0f, 1f);
+	}
+	// +1 in playlist index, moves to new song
+	public void NextSong ()
+	{
+		currentIndex++;
+		if (currentIndex >= playlist.Count)
+			currentIndex = 0;
+
+		CurrentSong();
+	}
+	// Moves to next track
+	public void MediaStateChanged()
+	{
+		if (MediaPlayer.State == MediaState.Stopped)
+			NextSong();
 	}
 }
