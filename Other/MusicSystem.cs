@@ -16,7 +16,9 @@ public class MusicSystem
 		Song TS = Globals.Content.Load<Song>("ToeJam Slowjam");
 
 		playlist.AddRange([ABD, BEB, FB, RRR, TJ, TS]);
-	}
+
+        MediaPlayer.MediaStateChanged += OnMediaStateChanged;
+    }
 	// Shuffle song order
 	public void ShuffleSongs()
 	{
@@ -63,7 +65,7 @@ public class MusicSystem
 	// Continues Music
 	public void Resume()
 	{
-		if (MediaPlayer.State == MediaState.Playing)
+		if (MediaPlayer.State == MediaState.Paused)
 			MediaPlayer.Resume();
     }
     // Volume 
@@ -77,13 +79,12 @@ public class MusicSystem
 		currentIndex++;
 		if (currentIndex >= playlist.Count)
 			currentIndex = 0;
-
 		CurrentSong();
 	}
 	// Moves to next track
-	public void MediaStateChanged()
+	public void OnMediaStateChanged(object sender, EventArgs e)
 	{
 		if (MediaPlayer.State == MediaState.Stopped)
-			NextSong();
+			NextSong();	
 	}
 }

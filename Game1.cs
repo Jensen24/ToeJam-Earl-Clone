@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace ToeJam_Earl
 {
     public class Game1 : Game
@@ -7,8 +9,6 @@ namespace ToeJam_Earl
         private TileManager _tileManager;
         private readonly GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-
-
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -18,7 +18,6 @@ namespace ToeJam_Earl
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
 
             _graphics.PreferredBackBufferWidth = 1024;
             _graphics.PreferredBackBufferHeight = 768;
@@ -40,7 +39,6 @@ namespace ToeJam_Earl
             Tiles tiles = new Tiles(tileset);
             _tileManager = new TileManager(tiles, 8);
 
-            // TODO: use this.Content to load your game content here
         }
 
         protected override void Update(GameTime gameTime)
@@ -55,6 +53,15 @@ namespace ToeJam_Earl
             if (InputManager.PausePressed)
             {
                 GameState.TogglePause();
+
+                if (GameState.Paused)
+                {
+                    _gameManager.PauseAudio();
+                }
+                else
+                {
+                    _gameManager.ResumeAudio();
+                }
             }
             if (GameState.PresentsOpen)
             {
@@ -76,10 +83,7 @@ namespace ToeJam_Earl
 
                     return;
             }
-            if (GameState.Paused)
-            {
-                return;
-            }
+
             if (InputManager.TogglePresentsPressed)
             {
                 GameState.TogglePresents();
@@ -100,8 +104,6 @@ namespace ToeJam_Earl
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            // TODO: Add your drawing code here
 
             _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
             _tileManager.Draw(_spriteBatch);

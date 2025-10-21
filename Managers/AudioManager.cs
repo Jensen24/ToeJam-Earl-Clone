@@ -11,9 +11,18 @@ public class AudioManager
 		Quips = new QuipSystem();
 		SFX = new SFXSystem();
 	}
-	public void PlayFreeRoamMusic()
+    // Pause Menu Stuff
+    public void OnFirstOpen()
 	{
 		Music.ShuffleSongs();
 		Music.Play();
 	}
+    public void PauseMenu()
+    {
+		Music.Pause();
+    }
+    public void Unpause()
+    {
+        Music.Resume();
+    }
 }
