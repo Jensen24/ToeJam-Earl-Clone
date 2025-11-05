@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 public class Quadtree
 {
@@ -37,7 +36,7 @@ public class Quadtree
 		int w = _bounds.Width;
 		int h = _bounds.Height;
 
-		_nodes[0] = new Quadtree(_level + 1, new Rectangle(x + w / 2, y, w / 2, h / 2) // northeast
+		_nodes[0] = new Quadtree(_level + 1, new Rectangle(x + w / 2, y, w / 2, h / 2)); // northeast
         _nodes[1] = new Quadtree(_level + 1, new Rectangle(x, y, w / 2, h / 2)); // northwest           
         _nodes[2] = new Quadtree(_level + 1, new Rectangle(x, y + h / 2, w / 2, h / 2)); // southwest
         _nodes[3] = new Quadtree(_level + 1, new Rectangle(x + w / 2, y + h / 2, w / 2, h / 2)); // southeast
@@ -52,21 +51,23 @@ public class Quadtree
 		bool topQuadrant = rect.Y < horizontalMidpint && rect.Y + rect.Height < horizontalMidpint;
 		bool bottomQuadrant = rect.Y > horizontalMidpint;
 
-		if (rect.X + rect.Width < verticalMidpointMidpoint)
+		if (rect.X + rect.Width <= verticalMidpoint)
 		{
-			if (topQuadrant) index = 1;
-			else if (bottomQuadrant) index = 2;
-		}
+			if (topQuadrant) index = 1; // northwest
+            else if (bottomQuadrant) index = 2; // southwest
+        }
 		else if (rect.X > verticalMidpoint)
 		{
-			if (topQuadrant) index = 0;
-			else if (bottomQuadrant) index = 3;
-		}
+			if (topQuadrant) index = 0; // northeast
+            else if (bottomQuadrant) index = 3; // southeast
+        }
 		return index;
 	}
 
 	public void insert(GameObject obj)
 	{
+		if (obj == null) return;
+
 		if (_nodes[0] != null)
 		{
 			int index = GetIndex(obj.Bounds);
@@ -82,15 +83,17 @@ public class Quadtree
 		{
 			if (_nodes[0] == null)
 				Subdivide();
-			int i = 0;
+            // Move objects to child nodes
+            int i = 0;
 			while (i < _objects.Count)
 			{
 				int index = GetIndex(_objects[i].Bounds);
 				if (index != -1)
 				{
-					_nodes[index].insert(_objects[i]);
+					var moving = _objects[i];
 					_objects.RemoveAt(i);
-				}
+                    _nodes[index].insert(moving);
+                }
 				else i++;
 			}
 		}
@@ -98,12 +101,16 @@ public class Quadtree
 
 	public List<GameObject> Retrieve(List<GameObject> returnObjects, GameObject obj)
 	{
-		int index = GetIndex(obj.Bounds);
+		if (returnObjects == null)
+			returnObjects = new List<GameObject>();
+
+        int index = GetIndex(obj.Bounds);
 		if (index != -1 && _nodes[0] != null)
 		{
 			_nodes[index].Retrieve(returnObjects, obj);
 		}
-		returnObjects.AddRange(_objects);
+        // Add all objects in this node
+        returnObjects.AddRange(_objects);
 		return returnObjects;
 	}
 }

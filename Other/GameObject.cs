@@ -1,8 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-
-public enum CollisionShape
+﻿public enum CollisionShape
 {
     Rectangle,
     Circle
@@ -51,7 +47,7 @@ public abstract class GameObject
     public class Enemy : Entity
     {
         public Enemy(Vector2 position) : base(position) { }
-        public override void Update()
+        public override void Update(GameTime gameTime)
         {
             // add Enemy State Machine
             base.Update(gameTime);
@@ -105,7 +101,6 @@ public abstract class GameObject
 
             Position += Velocity;
             UpdateBounds();
-        }    
-
+        }   
     }
 }
