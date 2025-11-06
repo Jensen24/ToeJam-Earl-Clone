@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 
 public class Quadtree
 {
@@ -13,17 +14,17 @@ public class Quadtree
 		_level = level;
 		_objects = new List<GameObject>();
 		_bounds = bounds;
-		_nodes = new Quadtree[maxObjects];
+		_nodes = new Quadtree[4];
 	}
 
-	public void CleanUp()
+	public void Clear()
 	{
-		_objects.CleanUp();
+		_objects.Clear();
 		for (int i = 0; i < _nodes.Length; i++)
 		{
 			if (_nodes[i] != null)
 			{
-				_nodes[i].CleanUp();
+				_nodes[i].Clear();
 				_nodes[i] = null;
 			}
 		}

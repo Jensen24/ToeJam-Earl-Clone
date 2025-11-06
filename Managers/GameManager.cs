@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 public class GameManager
 {
@@ -10,32 +11,38 @@ public class GameManager
 	private UI _ui;
     private InteractionManager _interactionManager;
 	private AudioManager _audioManager;
-	private CollisionSystem collisionSystem;
+	private CollisionSystem _collisionSystem;
+    private List<GameObject> _allObjects = new List<GameObject>();
     public void Init ()
 	{
-		_item = new();
-		_player = new();
-        _enemy = new();
+		_item = new Present();
+		_player = new ToeJam();
+        _enemy = new madDentist();
 		_npc = new Wiseman();
 		_elevator = new Elevator();
 		_ui = new UI();
         _interactionManager = new InteractionManager(_player, _enemy, _item);
-		allObjects.Add(_player);
-		allObjects.Add(_enemy);
-		allObjects.Add(_npc);
-		allObjects.Add(_item);
-        collisionSystem = new CollisionSystem(new Rectangle(0, 0, 1024, 768));
         _audioManager = new AudioManager();
+
+        _allObjects.Add(_player);
+		_allObjects.Add(_enemy);
+		_allObjects.Add(_npc);
+		_allObjects.Add(_item);
+        _collisionSystem = new CollisionSystem(new Rectangle(0, 0, 1024, 768));
 		_audioManager.OnFirstOpen();
     }
 	public void Update(GameTime gameTime)
 	{
 		InputManager.Update();
-		_item.Update(gameTime);
-		_player.Update(gameTime);
-        _enemy.Update(gameTime);
-		_npc.Update(gameTime);
-		_elevator.Update(gameTime);
+
+		foreach (var obj in _allObjects)
+		{
+			obj.Update(gameTime);
+		}
+
+		_collisionSystem.Update(_allObjects);
+
+        _elevator.Update(gameTime);
 		_ui.Update(gameTime);
         _interactionManager.Update();
     }

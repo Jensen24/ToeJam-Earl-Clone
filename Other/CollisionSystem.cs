@@ -15,7 +15,7 @@ public class CollisionSystem
 
 	public void Update(List<GameObject> allObjects)
 	{
-		_quadtree.CleanUp();
+		_quadtree.Clear();
 
 		foreach (var obj in allObjects)
 		{
@@ -84,54 +84,54 @@ public class CollisionSystem
 
 	private void HandleCollision(GameObject a, GameObject b)
 	{
-		if (a is Player && b is Tile)
+		if (a is Entity && b is Tile)
 		{
-			var p = (Player)a;
+			var p = (Entity)a;
             // Add collision response
 			// accomadate for leaning over edge // colliding with hard object (tree ,etx)
             p.Velocity = Vector2.Zero;
 			return;
         }
-		if (a is Player && b is Item)
+		if (a is Entity && b is Item)
 		{
 			b.IsActive = false;
 			// add to inventory // play sfx (if any)
 			return;
         }
-		if (a is Player && b is Enemy)
+		if (a is Entity && b is Enemy)
 		{
 			// consider adding two distinct enemies, one for charged v. one for grabs
 			// reduce health // play sfx // displace (if any)
 			return;
         }
-		if (a is Player && b is NPC)
+		if (a is Entity && b is NPC)
 		{
 			// some enemies you can interact with via button press. This would open dialogue system // shop
 			// trigger dialogue system // play sfx (if any)
 			return;
 
         }
-		if (b is Player && a is Tile)
+		if (b is Entity && a is Tile)
 		{
-			var p = (Player)b;
+			var p = (Entity)b;
 			// Add collision response
 			// accomadate for leaning over edge // colliding with hard object (tree ,etx)
 			p.Velocity = Vector2.Zero;
 			return;
         }
-		if (b is Player && a is Item)
+		if (b is Entity && a is Item)
 		{
 			a.IsActive = false;
 			// add to inventory // play sfx (if any)
 			return;
         }
-		if (b is Player && a is Enemy)
+		if (b is Entity && a is Enemy)
 		{
 			// consider adding two distinct enemies, one for charged v. one for grabs
 			// reduce health // play sfx // displace (if any)
 			return;
         }
-		if (b is Player && a is NPC)
+		if (b is Entity && a is NPC)
 		{
 			// some enemies you can interact with via button press. This would open dialogue system // shop
 			// trigger dialogue system // play sfx (if any)

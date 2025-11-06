@@ -1,14 +1,16 @@
 ﻿using System.Collections.Generic;
+using static GameObject;
 
-public class ToeJam
+
+public class ToeJam : Player
 {
 	private Vector2 _position = new(100, 100);
     public Vector2 PlayerPosition => _position;
     private float _speed = 200f;
     private float _scale = 1.5f;
 	private AnimationManager _anims = new();
-	public ToeJam()
-	{
+	public ToeJam(Vector2 startPos) : base(startPos)
+    {
         Texture2D toeJam = Globals.Content.Load<Texture2D>("ToeJam");
 
 		var idle = new List<Rectangle>
@@ -111,7 +113,7 @@ public class ToeJam
             return "Idle";
         }
     }
-	public void Update(GameTime gameTime)
+	public override void Update(GameTime gameTime)
 	{
         if (GameState.Paused) return;
 
@@ -121,14 +123,14 @@ public class ToeJam
 		if (InputManager.Moving)
 		{
             float moveSpeed = sneaking ? _speed * 0.5f : _speed; // If sneaking is held, speed is halfed then returned
-            _position += Vector2.Normalize(InputManager.Direction) * moveSpeed * Globals.TotalSeconds;
+            Position += Vector2.Normalize(InputManager.Direction) * moveSpeed * Globals.TotalSeconds;
 		}
 
         string key = GetAnimKeyFromDirection(InputManager.Direction, sneaking);
 		_anims.Update(key, gameTime);
 	}
 
-	public void Draw(SpriteBatch spriteBatch)
+	public override void Draw(SpriteBatch spriteBatch)
 	{
 		_anims.Draw(spriteBatch, _position);
 	}
