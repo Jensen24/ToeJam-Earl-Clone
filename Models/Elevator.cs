@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using static GameObject;
 
-public class Elevator
+public class Elevator : Item
 {
-    private Vector2 _position = new(450, 300);
-    public Vector2 ElevatorPosition => _position;
     private float _scale = 1.5f;
     private AnimationManager _anims = new();
-    public Elevator()
+    public Elevator(Rectangle bounds) : base(bounds)
     {
         Texture2D elevator = Globals.Content.Load<Texture2D>("Elevator");
 
@@ -25,13 +24,13 @@ public class Elevator
         _anims.AddAnimation("Buffer", new Animation(elevator, buffer, 0.15f, new Vector2(_scale, _scale)));
     }
 
-    public void Update(GameTime gameTime)
+    public override void Update(GameTime gameTime)
     {
         _anims.Update("Buffer", gameTime);
     }
 
-    public void Draw(SpriteBatch spriteBatch)
+    public override void Draw(SpriteBatch spriteBatch)
     {
-        _anims.Draw(spriteBatch, _position);
+        _anims.Draw(spriteBatch, Position);
     }
 }

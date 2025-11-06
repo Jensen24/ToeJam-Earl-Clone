@@ -5,12 +5,16 @@
 }
 public abstract class GameObject
 {
-    public Vector2 Position;
+    public Vector2 Position { get; protected set; }
     public Rectangle Bounds;
 	public bool IsCollidable = true;
 	public bool IsActive = true;
-    public CollisionShape ShapeType = CollisionShape.Rectangle;
-	public virtual void Update(GameTime gameTime) { }
+    public CollisionShape ShapeType;
+    public GameObject(Vector2 startPos)
+    {
+        Position = startPos;
+    }
+    public virtual void Update(GameTime gameTime) { }
 	public virtual void Draw(SpriteBatch spriteBatch) { }
     public virtual void UpdateBounds()
     {
@@ -20,13 +24,12 @@ public abstract class GameObject
             Bounds = new Rectangle((int)(Position.X - radius), (int)(Position.Y - radius), (radius * 2), (radius * 2));
         }
     }
-    public class Entity : GameObject
+    public abstract class Entity : GameObject
     {
         public Vector2 Velocity;
         public float Radius = 16f;
-        public Entity(Vector2 position)
+        public Entity(Vector2 startPos) : base(startPos)
         {
-            Position = position;
             ShapeType = CollisionShape.Circle;
             UpdateBounds();
         }
@@ -55,7 +58,7 @@ public abstract class GameObject
 
     public class Item : GameObject
     {
-        public Item(Rectangle bounds)
+        public Item(Rectangle bounds) : base(new Vector2(bounds.X, bounds.Y))
         {
             Bounds = bounds;
             ShapeType = CollisionShape.Rectangle;
@@ -64,7 +67,7 @@ public abstract class GameObject
 
     public class Tile : GameObject
     {
-        public Tile(Rectangle bounds, bool isCollidable = true)
+        public Tile(Rectangle bounds, bool isCollidable = true) : base(new Vector2(bounds.X, bounds.Y))
         {
             Bounds = bounds;
             IsCollidable = isCollidable;

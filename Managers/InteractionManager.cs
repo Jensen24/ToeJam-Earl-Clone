@@ -21,8 +21,8 @@ public class InteractionManager
 
     private void EnemyInteractions()
     {
-        Vector2 playerPos = _player.PlayerPosition;
-        Vector2 enemyPos = _enemy.DentistPosition;
+        Vector2 playerPos = _player.Position;
+        Vector2 enemyPos = _enemy.Position;
         Vector2 toEnemy = enemyPos - playerPos;
         float distance = toEnemy.Length();
 
@@ -43,8 +43,8 @@ public class InteractionManager
     }
     private void ItemPickup()
     {
-        Vector2 playerPos = _player.PlayerPosition;
-        Vector2 presentPos = _present.presentPosition;
+        Vector2 playerPos = _player.Position;
+        Vector2 presentPos = _present.Position;
         float distance = Vector2.Distance(playerPos, presentPos);
 
         if (distance < 20f)

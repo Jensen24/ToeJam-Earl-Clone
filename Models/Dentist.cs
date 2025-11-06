@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using static GameObject;
 
-public class madDentist
+public class madDentist : Enemy
 {
-    private Vector2 _position = new(400, 450);
-    public Vector2 DentistPosition => _position;
     private float _scale = 1.5f;
     private AnimationManager _anims = new();
-    public madDentist()
+    public madDentist(Vector2 startPos) : base(startPos)
     {
         Texture2D dentist = Globals.Content.Load<Texture2D>("Dentist");
 
@@ -25,13 +24,13 @@ public class madDentist
         _anims.AddAnimation("Down", new Animation(dentist, walkDown, 0.15f, new Vector2(_scale, _scale)));
     }
 
-    public void Update(GameTime gameTime)
+    public override void Update(GameTime gameTime)
     {
         _anims.Update("Down", gameTime);
     }
 
-    public void Draw(SpriteBatch spriteBatch)
+    public override void Draw(SpriteBatch spriteBatch)
     {
-        _anims.Draw(spriteBatch, _position);
+        _anims.Draw(spriteBatch, Position);
     }
 }

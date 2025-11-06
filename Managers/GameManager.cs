@@ -15,11 +15,11 @@ public class GameManager
     private List<GameObject> _allObjects = new List<GameObject>();
     public void Init ()
 	{
-		_item = new Present();
-		_player = new ToeJam();
-        _enemy = new madDentist();
-		_npc = new Wiseman();
-		_elevator = new Elevator();
+		_item = new Present(new Rectangle(0 , 0, 300, 300));
+		_player = new ToeJam(new Vector2(100, 100));
+        _enemy = new madDentist(new Vector2(400, 450));
+		_npc = new Wiseman(new Vector2(400, 300));
+		_elevator = new Elevator(new Rectangle(0, 0, 450, 300));
 		_ui = new UI();
         _interactionManager = new InteractionManager(_player, _enemy, _item);
         _audioManager = new AudioManager();
@@ -35,16 +35,17 @@ public class GameManager
 	{
 		InputManager.Update();
 
-		foreach (var obj in _allObjects)
+		if (!GameState.Paused)
 		{
-			obj.Update(gameTime);
-		}
-
-		_collisionSystem.Update(_allObjects);
-
-        _elevator.Update(gameTime);
-		_ui.Update(gameTime);
-        _interactionManager.Update();
+			foreach (var obj in _allObjects)
+			{
+				obj.Update(gameTime);
+			}
+            _collisionSystem.Update(_allObjects);
+            _elevator.Update(gameTime);
+            _interactionManager.Update();
+        }
+        _ui.Update(gameTime);
     }
 	public void Draw()
 	{

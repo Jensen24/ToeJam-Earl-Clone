@@ -4,8 +4,6 @@ using static GameObject;
 
 public class ToeJam : Player
 {
-	private Vector2 _position = new(100, 100);
-    public Vector2 PlayerPosition => _position;
     private float _speed = 200f;
     private float _scale = 1.5f;
 	private AnimationManager _anims = new();
@@ -115,8 +113,6 @@ public class ToeJam : Player
     }
 	public override void Update(GameTime gameTime)
 	{
-        if (GameState.Paused) return;
-
         // Arrow Keys: Movement
         bool sneaking = InputManager.SneakHeld;
 
@@ -132,6 +128,6 @@ public class ToeJam : Player
 
 	public override void Draw(SpriteBatch spriteBatch)
 	{
-		_anims.Draw(spriteBatch, _position);
+		_anims.Draw(spriteBatch, Position);
 	}
 }
