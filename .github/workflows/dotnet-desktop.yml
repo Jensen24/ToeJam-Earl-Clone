@@ -2,16 +2,15 @@ name: ToeJam & Earl CI/CD
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
-    types: [opened, synchronize, reopened, closed]
-    branches:
-      - main  
+    branches: [ main ]
 
 jobs:
-  my_job:
-    name: deploy to staging
+  build:
     runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
 
 
