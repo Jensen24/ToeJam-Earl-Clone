@@ -9,19 +9,19 @@ public class GameManager
 	private Wiseman _npc;
 	private Elevator _elevator;
 	private UI _ui;
-    private InteractionManager _interactionManager;
+    //private InteractionManager _interactionManager;
 	private AudioManager _audioManager;
 	private CollisionSystem _collisionSystem;
     private List<GameObject> _allObjects = new List<GameObject>();
     public void Init ()
 	{
-		_item = new Present(new Rectangle(0 , 0, 300, 300));
+		_item = new Present(new Rectangle(300, 300, 0, 0));
 		_player = new ToeJam(new Vector2(100, 100));
-        _enemy = new madDentist(new Vector2(400, 450));
+        _enemy = new madDentist(new Vector2(350, 300));
 		_npc = new Wiseman(new Vector2(400, 300));
-		_elevator = new Elevator(new Rectangle(0, 0, 450, 300));
+		_elevator = new Elevator(new Rectangle(450,300, 0, 0));
 		_ui = new UI();
-        _interactionManager = new InteractionManager(_player, _enemy, _item);
+        //_interactionManager = new InteractionManager(_player, _enemy, _item);
         _audioManager = new AudioManager();
 
         _allObjects.Add(_player);
@@ -43,7 +43,7 @@ public class GameManager
 			}
             _collisionSystem.Update(_allObjects);
             _elevator.Update(gameTime);
-            _interactionManager.Update();
+           // _interactionManager.Update();
         }
         _ui.Update(gameTime);
     }

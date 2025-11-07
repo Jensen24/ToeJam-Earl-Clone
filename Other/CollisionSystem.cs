@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+﻿using System.Collections.Generic;
 using static GameObject;
 
 public class CollisionSystem
@@ -19,7 +17,8 @@ public class CollisionSystem
 
 		foreach (var obj in allObjects)
 		{
-			if (obj != null && obj.IsActive)
+            // Active objects are registered
+            if (obj != null && obj.IsActive)
 				_quadtree.insert(obj);
 		}
 
@@ -92,9 +91,10 @@ public class CollisionSystem
             p.Velocity = Vector2.Zero;
 			return;
         }
-		if (a is Entity && b is Item)
+		if (a is Player && b is Item)
 		{
-			b.IsActive = false;
+            System.Diagnostics.Debug.WriteLine($"{a.GetType().Name} collided with {b.GetType().Name}");
+            b.IsActive = false;
 			// add to inventory // play sfx (if any)
 			return;
         }

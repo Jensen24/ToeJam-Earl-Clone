@@ -6,41 +6,52 @@
 public abstract class GameObject
 {
     public Vector2 Position { get; protected set; }
-    public Rectangle Bounds;
-	public bool IsCollidable = true;
+    public int Width {  get; protected set; }
+    public int Height { get; protected set; }
+    public float Radius { get; protected set; }
+    public bool IsCollidable = true;
 	public bool IsActive = true;
     public CollisionShape ShapeType;
     public GameObject(Vector2 startPos)
     {
         Position = startPos;
     }
-    public virtual void Update(GameTime gameTime) { }
-	public virtual void Draw(SpriteBatch spriteBatch) { }
-    public virtual void UpdateBounds()
+    public virtual Rectangle Bounds
     {
-        if (ShapeType == CollisionShape.Circle)
+        get
         {
-            int radius = Bounds.Width / 2;
-            Bounds = new Rectangle((int)(Position.X - radius), (int)(Position.Y - radius), (radius * 2), (radius * 2));
+            if (ShapeType == CollisionShape.Circle)
+            {
+                return new Rectangle((int)(Position.X - Radius), (int)(Position.Y - Radius), (int)(Radius * 2), (int)(Radius * 2));
+            }
+            else
+            {
+                return new Rectangle((int)Position.X, (int)Position.Y, Width, Height);
+            }
         }
     }
+    public virtual void Update(GameTime gameTime) { }
+	public virtual void Draw(SpriteBatch spriteBatch) { }
     public abstract class Entity : GameObject
     {
         public Vector2 Velocity;
-        public float Radius = 16f;
         public Entity(Vector2 startPos) : base(startPos)
         {
+            Position = startPos;
             ShapeType = CollisionShape.Circle;
-            UpdateBounds();
-        }
-        public override void UpdateBounds()
-        {
-            Bounds = new Rectangle((int)(Position.X - Radius), (int)(Position.Y - Radius), (int)(Radius * 2), (int)(Radius * 2));
+            Radius = 16f;
         }
         public override void Update(GameTime gameTime)
         {
-            Position += Velocity;
-            UpdateBounds();
+            Position += Velocity * (float)Globals.TotalSeconds;
+        }
+        // Test to visualize collision bounds, delete when done
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            Texture2D pixel = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
+            pixel.SetData(new[] { Color.Red });
+            Rectangle bounds = Bounds;
+            spriteBatch.Draw(pixel, bounds, Color.Red * 0.2f);
         }
     }
     public class NPC : Entity
@@ -58,9 +69,9 @@ public abstract class GameObject
 
     public class Item : GameObject
     {
-        public Item(Rectangle bounds) : base(new Vector2(bounds.X, bounds.Y))
+        public Item(Rectangle bounds, bool isActive = true) : base(new Vector2(bounds.X, bounds.Y))
         {
-            Bounds = bounds;
+            IsActive = isActive;
             ShapeType = CollisionShape.Rectangle;
         }
     }
@@ -69,7 +80,6 @@ public abstract class GameObject
     {
         public Tile(Rectangle bounds, bool isCollidable = true) : base(new Vector2(bounds.X, bounds.Y))
         {
-            Bounds = bounds;
             IsCollidable = isCollidable;
             ShapeType = CollisionShape.Rectangle;
         }

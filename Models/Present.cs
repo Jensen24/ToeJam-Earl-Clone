@@ -11,6 +11,9 @@ public class Present : Item
     public Present(Rectangle bounds) : base(bounds)
     {
         Texture2D present = Globals.Content.Load<Texture2D>("Items");
+        ShapeType = CollisionShape.Rectangle;
+        Width = bounds.Width;
+        Height = bounds.Height;
 
         var idle = new List<Rectangle>
         {

@@ -9,6 +9,11 @@ public class ToeJam : Player
 	private AnimationManager _anims = new();
 	public ToeJam(Vector2 startPos) : base(startPos)
     {
+        Radius = 16f;
+        ShapeType = CollisionShape.Circle;
+        // Delete when done
+        Width = (int)(Radius * _scale);
+        Height = (int)(Radius * _scale);
         Texture2D toeJam = Globals.Content.Load<Texture2D>("ToeJam");
 
 		var idle = new List<Rectangle>
