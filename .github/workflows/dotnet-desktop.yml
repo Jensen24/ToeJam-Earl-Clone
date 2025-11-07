@@ -7,10 +7,30 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  record_push:
     runs-on: windows-latest
-
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout full repository history
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0  # ensures the entire commit history is available
+
+      - name: Log push details
+        run: |
+          echo "📢 Push event detected!"
+          echo "Repository: ${{ github.repository }}"
+          echo "Branch: ${{ github.ref_name }}"
+          echo ""
+          echo "🕒 Full Commit History:"
+          git log --pretty=format:"%h | %an | %s | %ci" --abbrev-commit
+          echo ""
+          echo "🧾 Most Recent Commit Details:"
+          echo "Commit SHA: ${{ github.sha }}"
+          echo "Commit message: ${{ github.event.head_commit.message }}"
+          echo "Committer: ${{ github.event.head_commit.committer.name }}"
+          echo ""
+          echo "🗂 Changed files in this push:"
+          git diff --name-only ${{ github.event.before }} ${{ github.event.after }}
+
 
 
