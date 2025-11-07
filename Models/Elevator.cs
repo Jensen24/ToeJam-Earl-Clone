@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using static GameObject;
 
+// This is a reminder to create a new Object specifically for Scene transition stuff including: Elevators
 public class Elevator : Item
 {
     private float _scale = 1.5f;
