@@ -39,6 +39,7 @@ public class GameManager
 		{
 			foreach (var obj in _allObjects)
 			{
+				if (!obj.IsActive) continue;
 				obj.Update(gameTime);
 			}
             _collisionSystem.Update(_allObjects);
@@ -55,6 +56,14 @@ public class GameManager
 		_npc.Draw(Globals.SpriteBatch);
 		_elevator.Draw(Globals.SpriteBatch);
 		_ui.Draw(Globals.SpriteBatch);
+
+		foreach (var obj in _allObjects)
+		{
+			if (!obj.IsActive)
+			{
+				obj.Draw(Globals.SpriteBatch);
+			}
+		}
     }
     public void PauseAudio()
     {

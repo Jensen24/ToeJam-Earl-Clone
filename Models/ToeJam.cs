@@ -6,14 +6,11 @@ public class ToeJam : Player
 {
     private float _speed = 200f;
     private float _scale = 1.5f;
-	private AnimationManager _anims = new();
+    private AnimationManager _anims = new();
 	public ToeJam(Vector2 startPos) : base(startPos)
     {
         Radius = 16f;
         ShapeType = CollisionShape.Circle;
-        // Delete when done
-        Width = (int)(Radius * _scale);
-        Height = (int)(Radius * _scale);
         Texture2D toeJam = Globals.Content.Load<Texture2D>("ToeJam");
 
 		var idle = new List<Rectangle>
@@ -120,8 +117,8 @@ public class ToeJam : Player
 	{
         // Arrow Keys: Movement
         bool sneaking = InputManager.SneakHeld;
-
-		if (InputManager.Moving)
+        base.Update(gameTime);
+        if (InputManager.Moving)
 		{
             float moveSpeed = sneaking ? _speed * 0.5f : _speed; // If sneaking is held, speed is halfed then returned
             Position += Vector2.Normalize(InputManager.Direction) * moveSpeed * Globals.TotalSeconds;

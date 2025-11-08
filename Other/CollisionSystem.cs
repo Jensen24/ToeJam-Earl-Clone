@@ -83,61 +83,75 @@ public class CollisionSystem
 
 	private void HandleCollision(GameObject a, GameObject b)
 	{
-		if (a is Entity && b is Tile)
+		if (a is Player && b is Tile)
 		{
-			var p = (Entity)a;
             // Add collision response
 			// accomadate for leaning over edge // colliding with hard object (tree ,etx)
-            p.Velocity = Vector2.Zero;
+            ((Player)a).Velocity = Vector2.Zero;
 			return;
         }
-		if (a is Player && b is Item)
+        if (b is Player && a is Tile)
+        {
+            // Add collision response
+            // accomadate for leaning over edge // colliding with hard object (tree ,etx)
+            ((Player)b).Velocity = Vector2.Zero;
+            return;
+        }
+        if (a is Player && b is Item)
 		{
             System.Diagnostics.Debug.WriteLine($"{a.GetType().Name} collided with {b.GetType().Name}");
-            b.IsActive = false;
-			// add to inventory // play sfx (if any)
-			return;
+			if (b is Present present)
+			{
+                System.Diagnostics.Debug.WriteLine($"{a.GetType().Name} collected a {b.GetType().Name}!");
+                present.OnCollection((Player)a);
+            }
+            // b.IsActive = false;
+            // add to inventory // play sfx (if any)
+            return;
         }
-		if (a is Entity && b is Enemy)
+        if (b is Player  && a is Item)
+        {
+            System.Diagnostics.Debug.WriteLine($"{a.GetType().Name} collided with {b.GetType().Name}");
+            if (a is Present present)
+            {
+				System.Diagnostics.Debug.WriteLine($"{b.GetType().Name} collected a {a.GetType().Name}!");
+                present.OnCollection((Player)b);
+            }
+            // add to inventory // play sfx (if any)
+            return;
+        }
+        if (a is Player && b is Enemy)
 		{
-			// consider adding two distinct enemies, one for charged v. one for grabs
-			// reduce health // play sfx // displace (if any)
-			return;
+            System.Diagnostics.Debug.WriteLine($"{a.GetType().Name} collided with {b.GetType().Name}");
+			if (a is Player player)
+			{
+                System.Diagnostics.Debug.WriteLine($"{a.GetType().Name} was attacked, IFrames granted!");
+				player.OnCollision((Enemy)b);
+			}
+            // consider adding two distinct "Enemy" classifications, one for charged v. one for grabs
+            // reduce health // play sfx // displace (if any)
+            return;
         }
-		if (a is Entity && b is NPC)
+        if (b is Player && a is Enemy)
+        {
+            System.Diagnostics.Debug.WriteLine($"{a.GetType().Name} collided with {b.GetType().Name}");
+            // consider adding two distinct enemies, one for charged v. one for grabs
+            // reduce health // play sfx // displace (if any)
+            return;
+        }
+        if (a is Player && b is NPC)
 		{
 			// some enemies you can interact with via button press. This would open dialogue system // shop
 			// trigger dialogue system // play sfx (if any)
 			return;
 
         }
-		if (b is Entity && a is Tile)
-		{
-			var p = (Entity)b;
-			// Add collision response
-			// accomadate for leaning over edge // colliding with hard object (tree ,etx)
-			p.Velocity = Vector2.Zero;
-			return;
-        }
-		if (b is Entity && a is Item)
-		{
-			a.IsActive = false;
-			// add to inventory // play sfx (if any)
-			return;
-        }
-		if (b is Entity && a is Enemy)
-		{
-			// consider adding two distinct enemies, one for charged v. one for grabs
-			// reduce health // play sfx // displace (if any)
-			return;
-        }
-		if (b is Entity && a is NPC)
+		if (b is Player && a is NPC)
 		{
 			// some enemies you can interact with via button press. This would open dialogue system // shop
 			// trigger dialogue system // play sfx (if any)
 			return;
         }
-
-        // Expand on this: enemy v tile, enemy v item, enemy v npc, npc v tile, npc v item,
+        // Expand on this: enemy v tile, npc v tile
     }
 }

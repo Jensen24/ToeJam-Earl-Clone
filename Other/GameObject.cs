@@ -6,11 +6,11 @@
 public abstract class GameObject
 {
     public Vector2 Position { get; protected set; }
-    public int Width {  get; protected set; }
+    public int Width { get; protected set; }
     public int Height { get; protected set; }
     public float Radius { get; protected set; }
     public bool IsCollidable = true;
-	public bool IsActive = true;
+    public bool IsActive = true;
     public CollisionShape ShapeType;
     public GameObject(Vector2 startPos)
     {
@@ -31,7 +31,7 @@ public abstract class GameObject
         }
     }
     public virtual void Update(GameTime gameTime) { }
-	public virtual void Draw(SpriteBatch spriteBatch) { }
+    public virtual void Draw(SpriteBatch spriteBatch) { }
     public abstract class Entity : GameObject
     {
         public Vector2 Velocity;
@@ -45,43 +45,61 @@ public abstract class GameObject
         {
             Position += Velocity * (float)Globals.TotalSeconds;
         }
-        // Test to visualize collision bounds, delete when done
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            Texture2D pixel = new Texture2D(spriteBatch.GraphicsDevice, 1, 1);
-            pixel.SetData(new[] { Color.Red });
-            Rectangle bounds = Bounds;
-            spriteBatch.Draw(pixel, bounds, Color.Red * 0.2f);
-        }
     }
     public class NPC : Entity
-	{
-       protected NPC(Vector2 position) : base(position) { }
+    {
+        protected NPC(Vector2 position) : base(position) { }
     }
     public class Enemy : Entity
     {
-       protected Enemy(Vector2 position) : base(position) { }
+        protected Enemy(Vector2 position) : base(position) { }
     }
     public class Player : Entity
     {
+        private bool IsInvincible = false;
+        private float InvincibilityTimer = 0f;
+        private const float InvincibilityDuration = 1.5f;
         public Player(Vector2 position) : base(position) { }
-    }
-
-    public class Item : GameObject
-    {
-        public Item(Rectangle bounds, bool isActive = true) : base(new Vector2(bounds.X, bounds.Y))
+        public virtual void OnCollision(Enemy e)
         {
-            IsActive = isActive;
-            ShapeType = CollisionShape.Rectangle;
+            if (IsInvincible) return;
+            IsInvincible = true;
+            InvincibilityTimer = InvincibilityDuration;
+            IsCollidable = false;
+            // Add health reduction // displacement
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+            if (IsInvincible)
+            {
+                InvincibilityTimer -= Globals.TotalSeconds;
+                System.Diagnostics.Debug.WriteLine($"IFrame timer: {InvincibilityTimer:F2}");
+                if (InvincibilityTimer <= 0f)
+                {
+                    IsInvincible = false;
+                    IsCollidable = true;
+                    System.Diagnostics.Debug.WriteLine($"IFrames ended! Collidable = {IsCollidable}");
+                }
+            }
         }
     }
-
-    public class Tile : GameObject
-    {
-        public Tile(Rectangle bounds, bool isCollidable = true) : base(new Vector2(bounds.X, bounds.Y))
+        public class Item : GameObject
         {
-            IsCollidable = isCollidable;
-            ShapeType = CollisionShape.Rectangle;
+            public Item(Rectangle bounds, bool isActive = true) : base(new Vector2(bounds.X, bounds.Y))
+            {
+                IsActive = isActive;
+                ShapeType = CollisionShape.Rectangle;
+            }
+        }
+
+        public class Tile : GameObject
+        {
+            public Tile(Rectangle bounds, bool isCollidable = true) : base(new Vector2(bounds.X, bounds.Y))
+            {
+                IsCollidable = isCollidable;
+                ShapeType = CollisionShape.Rectangle;
+            }
         }
     }
-}

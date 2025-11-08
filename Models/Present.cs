@@ -14,6 +14,7 @@ public class Present : Item
         ShapeType = CollisionShape.Rectangle;
         Width = bounds.Width;
         Height = bounds.Height;
+        IsActive = true;
 
         var idle = new List<Rectangle>
         {
@@ -26,12 +27,18 @@ public class Present : Item
 
     public override void Update(GameTime gameTime)
     {
+        if (!IsActive) return;
         _anims.Update("Idle", gameTime);
         _rotation += _rotationSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
     }
 
     public override void Draw(SpriteBatch spriteBatch)
     {
+        if (!IsActive) return;
         _anims.Draw(spriteBatch, Position, _rotation);
+    }
+    public virtual void OnCollection(Player p)
+    {
+        IsActive = false;
     }
 }
