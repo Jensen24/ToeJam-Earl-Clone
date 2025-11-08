@@ -5,24 +5,26 @@ public class GameManager
 {
 	private Present _item;
 	private ToeJam _player;
-	private madDentist _enemy;
+    private madDentist _enemy;
 	private Wiseman _npc;
 	private Elevator _elevator;
 	private UI _ui;
     //private InteractionManager _interactionManager;
 	private AudioManager _audioManager;
-	private CollisionSystem _collisionSystem;
+    //private SFXSystem SFX;
+    private CollisionSystem _collisionSystem;
     private List<GameObject> _allObjects = new List<GameObject>();
     public void Init ()
 	{
-		_item = new Present(new Rectangle(300, 300, 0, 0));
+        _audioManager = new AudioManager();
+        //SFX = new SFXSystem();
+        _item = new Present(new Rectangle(300, 300, 0, 0));
 		_player = new ToeJam(new Vector2(100, 100));
         _enemy = new madDentist(new Vector2(350, 300));
 		_npc = new Wiseman(new Vector2(400, 300));
 		_elevator = new Elevator(new Rectangle(450,300, 0, 0));
 		_ui = new UI();
         //_interactionManager = new InteractionManager(_player, _enemy, _item);
-        _audioManager = new AudioManager();
 
         _allObjects.Add(_player);
 		_allObjects.Add(_enemy);

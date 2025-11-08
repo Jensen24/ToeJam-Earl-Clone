@@ -1,4 +1,7 @@
-﻿public enum CollisionShape
+﻿using System;
+using System.Collections.Generic;
+
+public enum CollisionShape
 {
     Rectangle,
     Circle
@@ -56,6 +59,7 @@ public abstract class GameObject
     }
     public class Player : Entity
     {
+        SoundEffect Hurt = Globals.Content.Load<SoundEffect>("Yeouch! (ToeJam)");
         private bool IsInvincible = false;
         private float InvincibilityTimer = 0f;
         private const float InvincibilityDuration = 1.5f;
@@ -66,6 +70,7 @@ public abstract class GameObject
             IsInvincible = true;
             InvincibilityTimer = InvincibilityDuration;
             IsCollidable = false;
+            Hurt.Play();
             // Add health reduction // displacement
         }
 

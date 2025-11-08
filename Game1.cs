@@ -6,6 +6,7 @@ namespace ToeJam_Earl
     public class Game1 : Game
     {
         private GameManager _gameManager;
+        private AudioManager _audioManager;
         private TileManager _tileManager;
         private readonly GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;

@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Media;
-
-public class SFXSystem
+﻿public class SFXSystem
 {
-	public SoundEffect hurt;
+	//public SoundEffect Hurt { get; private set; }
 	public SFXSystem()
 	{
-        SoundEffect hurt = Globals.Content.Load<SoundEffect>("Yeouch! (ToeJam)");
+        //SoundEffect Hurt = Globals.Content.Load<SoundEffect>("Yeouch! (ToeJam)");
     }
+	//public void PlayHurt()
+	//{
+       // System.Diagnostics.Debug.WriteLine("Hurt PLAYED!");
+       // Hurt?.Play(1.0f, 0f, 0f);
+    //}
 }
