@@ -60,6 +60,8 @@ public abstract class GameObject
     public class Player : Entity
     {
         SoundEffect Hurt = Globals.Content.Load<SoundEffect>("Yeouch! (ToeJam)");
+        private bool MovementLocked = false;
+        private Vector2 TornadoOffest = Vector2.Zero;
         private bool IsInvincible = false;
         private float InvincibilityTimer = 0f;
         private const float InvincibilityDuration = 1.5f;
@@ -72,6 +74,23 @@ public abstract class GameObject
             IsCollidable = false;
             Hurt.Play();
             // Add health reduction // displacement
+        }
+
+        public void StartTornadoCapture()
+        {
+            Velocity = Vector2.Zero;
+            MovementLocked = true;
+        }
+
+        public void BeginTornadoOffset(Vector2 offset)
+        {
+            Position += offset;
+        }
+
+        public void EndTornadoCapture()
+        {
+            // hp drain
+            MovementLocked = false;
         }
 
         public override void Update(GameTime gameTime)
