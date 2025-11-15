@@ -6,6 +6,7 @@ public class GameManager
 	private Present _item;
 	private ToeJam _player;
     private madDentist _enemy;
+	private Tornado _enemy1;
 	private Wiseman _npc;
 	private Elevator _elevator;
 	private UI _ui;
@@ -21,14 +22,16 @@ public class GameManager
         _item = new Present(new Rectangle(300, 300, 0, 0));
 		_player = new ToeJam(new Vector2(100, 100));
         _enemy = new madDentist(new Vector2(350, 300));
-		_npc = new Wiseman(new Vector2(400, 300));
+		_enemy1 = new Tornado(new Vector2(500, 300));
+        _npc = new Wiseman(new Vector2(400, 300));
 		_elevator = new Elevator(new Rectangle(450,300, 0, 0));
 		_ui = new UI();
         //_interactionManager = new InteractionManager(_player, _enemy, _item);
 
         _allObjects.Add(_player);
 		_allObjects.Add(_enemy);
-		_allObjects.Add(_npc);
+		_allObjects.Add(_enemy1);
+        _allObjects.Add(_npc);
 		_allObjects.Add(_item);
         _collisionSystem = new CollisionSystem(new Rectangle(0, 0, 1024, 768));
 		_audioManager.OnFirstOpen();
@@ -55,7 +58,8 @@ public class GameManager
 		_item.Draw(Globals.SpriteBatch);
 		_player.Draw(Globals.SpriteBatch);
         _enemy.Draw(Globals.SpriteBatch);
-		_npc.Draw(Globals.SpriteBatch);
+		_enemy1.Draw(Globals.SpriteBatch);
+        _npc.Draw(Globals.SpriteBatch);
 		_elevator.Draw(Globals.SpriteBatch);
 		_ui.Draw(Globals.SpriteBatch);
 

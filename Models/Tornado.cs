@@ -58,32 +58,32 @@ public class Tornado : Enemy
         switch (_state)
         {
             case TornadoState.Patrol:
-                PatrolBehavior(deltaTime);
+                PatrolBehavior(deltaTime,gameTime);
                 break;
 
             case TornadoState.Alert:
-                AlertBehavior(deltaTime);
+                AlertBehavior(deltaTime, gameTime);
                 break;
             
             case TornadoState.Capture:
-                CaptureBehavior(deltaTime);
+                CaptureBehavior(deltaTime, gameTime);
                 break;
 
             case TornadoState.Death:
-                DeathBehavior(deltaTime);
+                DeathBehavior(deltaTime, gameTime);
                 break;
         }
     }
 
-    private void PatrolBehavior(float deltaTime)
+    private void PatrolBehavior(float deltaTime, GameTime gameTime)
     {
-        _anims.Update("Idle", Globals.gametime);
+        _anims.Update("Idle", gameTime);
 
         Position.X += (float)Math.Sin(Globals.TotalSeconds * 1.5f) * _speed * deltaTime;
         Position.Y += (float)Math.Cos(Globals.TotalSeconds * 1f) * _speed * deltaTime;
 
         // Player in proxy --> Alert state
-        var player = Globals.Player;
+        var player = GameObject.Player;
         if (Vector2.Distance(Position, player.Position) < 100f)
             {
                 _state = TornadoState.Alert;
@@ -91,42 +91,58 @@ public class Tornado : Enemy
             }
     }
 
-    private void AlertBehavior(float deltaTime)
+    private void AlertBehavior(float deltaTime, GameTime gameTime)
     {
         _alertTimer -= deltaTime;
         Position.X += (float)(rand.NextDouble() - 0.5f) * 30f * deltaTime;
         Position.Y += (float)(rand.NextDouble() - 0.5f) * 30f * deltaTime;
-        _anims.Update("Idle", Globals.gameTime);
+        _anims.Update("Idle", gameTime);
 
         if (_alertTimer <= 0f)
         {
             _state = TornadoState.Patrol;
-            _captureTimer = _captureDuration;
-
-            if (Globals.Player is ToeJam)
-                // might need to switch to _anims.Play if glitchy
-                _anims.Update("Capture ToeJam", Globals.gameTime);
-            else 
-                _anims.Update("Capture Earl", Globals.gameTime);
-
-            Globals.Player.StartTornadoCapture();
         }
     }
-
-    private void CaptureBehavior(float deltaTime)
+    public void StartCapture(Player player, GameTime gameTime)
     {
+        if (player == null) return;
+        _capturedPlayer = player;
+        _state = TornadoState.Capture;
+        _captureTimer = _captureDuration;
+
+        if (player is ToeJam)
+            // might need to switch to _anims.Play if glitchy
+            _anims.Update("Capture ToeJam", gameTime);
+        else
+            _anims.Update("Capture Earl", gameTime);
+
+        player.StartTornadoCapture();
+    }
+
+    private void CaptureBehavior(float deltaTime, GameTime gameTime)
+    {
+        if (_capturedPlayer != null)
+        {
+            float jitterX = rand.Next(-40, 41) * deltaTime;
+            float jitterY = rand.Next(-40, 41) * deltaTime;
+            _capturedPlayer.BeginTornadoOffset(new Vector2(jitterX, jitterY));
+        }
+
         _captureTimer -= deltaTime;
-        Globals.Player.Position += new Vector2(Globals.Random.Next(-40, 40), Globals.Random.Next(-40, 40)) * dt;
-        _anims.Update(null, Globals.gameTime);
+        _anims.Update(null, gameTime);
 
         if (_captureTimer <= 0f)
         {
+            if(_capturedPlayer != null)
+            {
+                _capturedPlayer.EndTornadoCapture();
+                _capturedPlayer = null;
+            }
             _state = TornadoState.Death;
-            Globals.Player.EndTornadoCapture();
         }
     }
 
-    private void DeathBehavior(float deltaTime)
+    private void DeathBehavior(float deltaTime, GameTime gameTime)
     {
         IsActive = false;
     }
