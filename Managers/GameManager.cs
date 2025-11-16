@@ -22,7 +22,7 @@ public class GameManager
         _item = new Present(new Rectangle(300, 300, 0, 0));
 		_player = new ToeJam(new Vector2(100, 100));
         _enemy = new madDentist(new Vector2(350, 300));
-		_enemy1 = new Tornado(new Vector2(500, 300));
+		_enemy1 = new Tornado(new Vector2(500, 300), _player);
         _npc = new Wiseman(new Vector2(400, 300));
 		_elevator = new Elevator(new Rectangle(450,300, 0, 0));
 		_ui = new UI();

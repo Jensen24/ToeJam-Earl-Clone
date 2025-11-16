@@ -8,7 +8,8 @@ public enum CollisionShape
 }
 public abstract class GameObject
 {
-    public Vector2 Position { get; protected set; }
+    protected Vector2 _position;
+    public Vector2 Position { get => _position; protected set => _position = value; }
     public int Width { get; protected set; }
     public int Height { get; protected set; }
     public float Radius { get; protected set; }
@@ -17,7 +18,7 @@ public abstract class GameObject
     public CollisionShape ShapeType;
     public GameObject(Vector2 startPos)
     {
-        Position = startPos;
+        _position = startPos;
     }
     public virtual Rectangle Bounds
     {
@@ -25,11 +26,11 @@ public abstract class GameObject
         {
             if (ShapeType == CollisionShape.Circle)
             {
-                return new Rectangle((int)(Position.X - Radius), (int)(Position.Y - Radius), (int)(Radius * 2), (int)(Radius * 2));
+                return new Rectangle((int)(_position.X - Radius), (int)(_position.Y - Radius), (int)(Radius * 2), (int)(Radius * 2));
             }
             else
             {
-                return new Rectangle((int)Position.X, (int)Position.Y, Width, Height);
+                return new Rectangle((int)_position.X, (int)_position.Y, Width, Height);
             }
         }
     }
@@ -40,13 +41,12 @@ public abstract class GameObject
         public Vector2 Velocity;
         public Entity(Vector2 startPos) : base(startPos)
         {
-            Position = startPos;
             ShapeType = CollisionShape.Circle;
             Radius = 16f;
         }
         public override void Update(GameTime gameTime)
         {
-            Position += Velocity * (float)Globals.TotalSeconds;
+            _position += Velocity * (float)Globals.TotalSeconds;
         }
     }
     public class NPC : Entity
@@ -85,7 +85,7 @@ public abstract class GameObject
 
         public void BeginTornadoOffset(Vector2 offset)
         {
-            Position += offset;
+            _position += offset;
         }
 
         public void EndTornadoCapture()

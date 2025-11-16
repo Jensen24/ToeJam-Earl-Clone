@@ -13,16 +13,17 @@ public class Tornado : Enemy
 {
     private TornadoState _state = TornadoState.Patrol;
     private Player _capturedPlayer = null;
+    private Player _player;
     private readonly Random rand = new Random();
     private float _alertTimer = 0f;
     private float _captureTimer = 0f;
-    private readonly float _alertDuration = 2f;
-    private readonly float _captureDuration = 2f;
-    private float _speed = 90f;
+    private readonly float _alertDuration = 6f;
+    private readonly float _captureDuration = 5f;
+    private float _speed = 50f;
     private float _scale = 1.5f;
     private AnimationManager _anims = new();
 
-    public Tornado(Vector2 startPos) : base(startPos)
+    public Tornado(Vector2 startPos, Player player) : base(startPos)
     {
         Texture2D tornado = Globals.Content.Load<Texture2D>("Tornado");
 
@@ -50,6 +51,7 @@ public class Tornado : Enemy
         _anims.AddAnimation("Idle", new Animation(tornado, idle, 0.15f, new Vector2(_scale, _scale)));
         _anims.AddAnimation("Capture ToeJam", new Animation(tornado, ToeJam, 0.15f, new Vector2(_scale, _scale)));
         _anims.AddAnimation("Capture Earl", new Animation(tornado, Earl, 0.15f, new Vector2(_scale, _scale)));
+        _player = player;
     }
 
     public override void Update(GameTime gameTime)
@@ -59,14 +61,17 @@ public class Tornado : Enemy
         {
             case TornadoState.Patrol:
                 PatrolBehavior(deltaTime,gameTime);
+                _anims.Update("Idle", gameTime);
                 break;
 
             case TornadoState.Alert:
                 AlertBehavior(deltaTime, gameTime);
+                _anims.Update("Idle", gameTime);
                 break;
             
             case TornadoState.Capture:
                 CaptureBehavior(deltaTime, gameTime);
+                _anims.Update(_capturedPlayer is ToeJam ? "Capture ToeJam" : "Capture Earl", gameTime);
                 break;
 
             case TornadoState.Death:
@@ -79,11 +84,10 @@ public class Tornado : Enemy
     {
         _anims.Update("Idle", gameTime);
 
-        Position.X += (float)Math.Sin(Globals.TotalSeconds * 1.5f) * _speed * deltaTime;
-        Position.Y += (float)Math.Cos(Globals.TotalSeconds * 1f) * _speed * deltaTime;
+        _position += new Vector2((float)Math.Sin(Globals.TotalSeconds * 1f) * _speed * deltaTime, (float)Math.Cos(Globals.TotalSeconds * 1.5f) * _speed * deltaTime);
 
         // Player in proxy --> Alert state
-        var player = GameObject.Player;
+        var player = _player;
         if (Vector2.Distance(Position, player.Position) < 100f)
             {
                 _state = TornadoState.Alert;
@@ -94,8 +98,7 @@ public class Tornado : Enemy
     private void AlertBehavior(float deltaTime, GameTime gameTime)
     {
         _alertTimer -= deltaTime;
-        Position.X += (float)(rand.NextDouble() - 0.5f) * 30f * deltaTime;
-        Position.Y += (float)(rand.NextDouble() - 0.5f) * 30f * deltaTime;
+        _position += new Vector2((float)(rand.NextDouble() - 0.5f) * 30f * deltaTime, (float)(rand.NextDouble() - 0.5f) * 30f * deltaTime);
         _anims.Update("Idle", gameTime);
 
         if (_alertTimer <= 0f)
@@ -103,20 +106,20 @@ public class Tornado : Enemy
             _state = TornadoState.Patrol;
         }
     }
-    public void StartCapture(Player player, GameTime gameTime)
+    public void StartCapture(Player player)
     {
-        if (player == null) return;
-        _capturedPlayer = player;
+        if (_player == null) return;
+        _capturedPlayer = _player;
         _state = TornadoState.Capture;
         _captureTimer = _captureDuration;
 
-        if (player is ToeJam)
+        if (_player is ToeJam)
             // might need to switch to _anims.Play if glitchy
-            _anims.Update("Capture ToeJam", gameTime);
+            _anims.Update("Capture ToeJam", new GameTime());
         else
-            _anims.Update("Capture Earl", gameTime);
+            _anims.Update("Capture Earl", new GameTime());
 
-        player.StartTornadoCapture();
+        _player.StartTornadoCapture();
     }
 
     private void CaptureBehavior(float deltaTime, GameTime gameTime)
@@ -149,6 +152,7 @@ public class Tornado : Enemy
 
     public override void Draw(SpriteBatch spriteBatch)
     {
+        if (!IsActive) return;
         _anims.Draw(spriteBatch, Position);
     }
 }

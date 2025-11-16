@@ -13,6 +13,10 @@ public class AnimationManager
     }
     public void Update(object frame, GameTime gameTime)
     {
+        // hopefully this fixes tornado collisin pls
+        if (frame == null)
+            return;
+
         if (_anims.TryGetValue(frame, out Animation anim))
         {
             anim.Start();

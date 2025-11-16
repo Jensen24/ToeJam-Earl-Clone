@@ -122,33 +122,19 @@ public class CollisionSystem
         }
         if (a is Player && b is Enemy)
 		{
-            System.Diagnostics.Debug.WriteLine($"{a.GetType().Name} collided with {b.GetType().Name}");
-			if (a is Player player)
-			{
-                System.Diagnostics.Debug.WriteLine($"{a.GetType().Name} was attacked, IFrames granted!");
-				player.OnCollision((Enemy)b);
-			}
-            if (b is Tornado tornado)
+            Player player = (Player)a;
+            Enemy enemy = (Enemy)b;
+
+            System.Diagnostics.Debug.WriteLine($"{player.GetType().Name} collided with {enemy.GetType().Name}");
+            player.OnCollision(enemy);
+
+            if (enemy is Tornado tornado)
             {
-                System.Diagnostics.Debug.WriteLine($"{a.GetType().Name} was attacked, IFrames granted!");
-                tornado.StartCapture((Player)a);
+                System.Diagnostics.Debug.WriteLine($"{player.GetType().Name} is being captured by Tornado!");
+                tornado.StartCapture(player);
             }
-            // consider adding two distinct "Enemy" classifications, one for charged v. one for grabs
-            // reduce health // play sfx // displace (if any)
             return;
         }
-        //if (a is Player && b is Tornado)
-        //{
-        //    System.Diagnostics.Debug.WriteLine($"{a.GetType().Name} collided with {b.GetType().Name}");
-        //    if (b is Tornado tornado)
-        //    {
-        //        System.Diagnostics.Debug.WriteLine($"{a.GetType().Name} was attacked, IFrames granted!");
-        //        tornado.StartCapture((Player)a);
-        //    }
-        //    // consider adding two distinct "Enemy" classifications, one for charged v. one for grabs
-        //    // reduce health // play sfx // displace (if any)
-        //    return;
-        //}
         if (b is Player && a is Enemy)
         {
             System.Diagnostics.Debug.WriteLine($"{a.GetType().Name} collided with {b.GetType().Name}");
