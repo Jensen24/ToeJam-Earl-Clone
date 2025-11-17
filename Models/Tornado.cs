@@ -12,12 +12,15 @@ public enum TornadoState
 public class Tornado : Enemy
 {
     private TornadoState _state = TornadoState.Patrol;
+    private List<Vector2> ZPath;
+    private int _currentPathIndex = 0;
+    private float _pathMax = 10f;
     private Player _capturedPlayer = null;
     private Player _player;
     private readonly Random rand = new Random();
     private float _alertTimer = 0f;
     private float _captureTimer = 0f;
-    private readonly float _alertDuration = 6f;
+    private readonly float _alertDuration = 3f;
     private readonly float _captureDuration = 5f;
     private float _speed = 50f;
     private float _scale = 1.5f;
@@ -52,6 +55,18 @@ public class Tornado : Enemy
         _anims.AddAnimation("Capture ToeJam", new Animation(tornado, ToeJam, 0.15f, new Vector2(_scale, _scale)));
         _anims.AddAnimation("Capture Earl", new Animation(tornado, Earl, 0.15f, new Vector2(_scale, _scale)));
         _player = player;
+
+        float pointOne = 312; 
+        float pointTwo = 712; 
+        float pointThree = 284; 
+        float pointFour = 484; 
+        ZPath = new List<Vector2>()
+        {
+            new Vector2(pointOne, pointThree), // top Left of Z
+            new Vector2(pointTwo, pointThree), // top Right of Z
+            new Vector2(pointOne, pointFour), // bottom Left of Z
+            new Vector2(pointTwo, pointFour), // bottom Right of Z
+        };
     }
 
     public override void Update(GameTime gameTime)
@@ -80,15 +95,34 @@ public class Tornado : Enemy
         }
     }
 
+    private void FollowPath(float deltaTime)
+    {
+        Vector2 target = ZPath[_currentPathIndex];
+        Vector2 direction = target - Position;
+        if (direction != Vector2.Zero)
+            direction.Normalize();
+
+        _position += direction * _speed * deltaTime;
+
+        if (Vector2.Distance(_position, target) < _pathMax)
+        {
+            _currentPathIndex++;
+            if (_currentPathIndex >= ZPath.Count)
+            {
+                ZPath.Reverse();
+                _currentPathIndex = 1;
+            }
+        }
+    }
+
     private void PatrolBehavior(float deltaTime, GameTime gameTime)
     {
         _anims.Update("Idle", gameTime);
 
-        _position += new Vector2((float)Math.Sin(Globals.TotalSeconds * 1f) * _speed * deltaTime, (float)Math.Cos(Globals.TotalSeconds * 1.5f) * _speed * deltaTime);
+        FollowPath(deltaTime);
 
         // Player in proxy --> Alert state
-        var player = _player;
-        if (Vector2.Distance(Position, player.Position) < 100f)
+        if (Vector2.Distance(Position, _player.Position) < 265f)
             {
                 _state = TornadoState.Alert;
                 _alertTimer = _alertDuration;
@@ -98,7 +132,11 @@ public class Tornado : Enemy
     private void AlertBehavior(float deltaTime, GameTime gameTime)
     {
         _alertTimer -= deltaTime;
-        _position += new Vector2((float)(rand.NextDouble() - 0.5f) * 30f * deltaTime, (float)(rand.NextDouble() - 0.5f) * 30f * deltaTime);
+        Vector2 direction = _player.Position - Position;
+        if (direction != Vector2.Zero)
+            direction.Normalize();
+
+        _position += direction * _speed * 1.5f * deltaTime;
         _anims.Update("Idle", gameTime);
 
         if (_alertTimer <= 0f)
@@ -108,37 +146,42 @@ public class Tornado : Enemy
     }
     public void StartCapture(Player player)
     {
-        if (_player == null) return;
-        _capturedPlayer = _player;
+        if (player == null) return;
+        _capturedPlayer = player;
         _state = TornadoState.Capture;
         _captureTimer = _captureDuration;
 
-        if (_player is ToeJam)
+        if (player is ToeJam)
             // might need to switch to _anims.Play if glitchy
             _anims.Update("Capture ToeJam", new GameTime());
         else
             _anims.Update("Capture Earl", new GameTime());
 
-        _player.StartTornadoCapture();
+        player.StartTornadoCapture();
     }
+
+    // 
+    //public void BeginTornadoOffset(Vector2 offset)
+    //{
+    //    _position += offset;
+    //}
 
     private void CaptureBehavior(float deltaTime, GameTime gameTime)
     {
+        Tornado tornado = this;
         if (_capturedPlayer != null)
         {
-            float jitterX = rand.Next(-40, 41) * deltaTime;
-            float jitterY = rand.Next(-40, 41) * deltaTime;
-            _capturedPlayer.BeginTornadoOffset(new Vector2(jitterX, jitterY));
+            FollowPath(deltaTime);
         }
 
         _captureTimer -= deltaTime;
-        _anims.Update(null, gameTime);
 
         if (_captureTimer <= 0f)
         {
             if(_capturedPlayer != null)
             {
                 _capturedPlayer.EndTornadoCapture();
+                _capturedPlayer.Relocate(tornado.Position);
                 _capturedPlayer = null;
             }
             _state = TornadoState.Death;

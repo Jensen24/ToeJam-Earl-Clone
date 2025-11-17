@@ -130,6 +130,7 @@ public class ToeJam : Player
 
 	public override void Draw(SpriteBatch spriteBatch)
 	{
-		_anims.Draw(spriteBatch, Position);
+        if (!IsActive) return;
+        _anims.Draw(spriteBatch, Position);
 	}
 }

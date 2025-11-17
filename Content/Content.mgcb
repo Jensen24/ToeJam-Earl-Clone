@@ -145,6 +145,12 @@
 /processorParam:TextureFormat=Color
 /build:MowerMan.png
 
+#begin OpenGift.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:OpenGift.wav
+
 #begin PhantomTruck.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -156,6 +162,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:PhantomTruck.png
+
+#begin PickUp.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:PickUp.wav
 
 #begin Rapmaster Rocket Racket.mp3
 /importer:Mp3Importer
