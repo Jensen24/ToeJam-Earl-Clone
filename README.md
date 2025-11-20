@@ -28,3 +28,5 @@
 ###  Game Programming Algorithms and Techniques: A Platform-Agnostic Approach (Game Design) written by Sanjay Madhav
 ### https://docs.monogame.net/articles/tutorials/building_2d_games/
 ### Numerous slides provided by Mr Hendrickson
+### https://www.deviantart.com/supercommanderwolfy/art/Dirt-Water-Tiles-001-265584789 Water assets
+### 
