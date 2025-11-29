@@ -50,6 +50,16 @@ namespace ToeJam_Earl
             InputManager.Update();
 
             // Land of 'If' 
+            if (GameState.InMainMenu)
+            {
+                UpdateMainMenu();
+                return;
+            }
+            if (GameState.QuitRequest)
+            {
+                Exit();
+                return;
+            }
             if (InputManager.PausePressed)
             {
                 GameState.TogglePause();
@@ -96,13 +106,17 @@ namespace ToeJam_Earl
             {
                 System.Diagnostics.Debug.WriteLine("Sneak Activated");
             }
-
             _gameManager.Update(gameTime);
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
+            if (GameState.InMainMenu)
+            {
+                DrawMainMenu();
+                return;
+            }
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
