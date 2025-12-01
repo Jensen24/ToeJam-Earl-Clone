@@ -160,12 +160,6 @@ public class Tornado : Enemy
         player.StartTornadoCapture();
     }
 
-    // 
-    //public void BeginTornadoOffset(Vector2 offset)
-    //{
-    //    _position += offset;
-    //}
-
     private void CaptureBehavior(float deltaTime, GameTime gameTime)
     {
         Tornado tornado = this;

@@ -1,5 +1,6 @@
 ﻿
 using System;
+using static GameObject;
 
 namespace ToeJam_Earl
 {
@@ -9,6 +10,7 @@ namespace ToeJam_Earl
         private TileManager _tileManager;
         private readonly GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private CameraSystem _camera;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -24,7 +26,7 @@ namespace ToeJam_Earl
             _graphics.ApplyChanges();
 
             Globals.Content = Content;
-
+            _camera = new CameraSystem(Vector2.Zero);
             _gameManager = new();
             _gameManager.Init();
 
@@ -50,16 +52,16 @@ namespace ToeJam_Earl
             InputManager.Update();
 
             // Land of 'If' 
-            if (GameState.InMainMenu)
-            {
-                UpdateMainMenu();
-                return;
-            }
-            if (GameState.QuitRequest)
-            {
-                Exit();
-                return;
-            }
+            //if (GameState.InMainMenu)
+            //{
+            //    // UpdateMainMenu();
+            //    return;
+            //}
+            //if (GameState.QuitRequest)
+            //{
+            //    Exit();
+            //    return;
+            //}
             if (InputManager.PausePressed)
             {
                 GameState.TogglePause();
@@ -107,19 +109,20 @@ namespace ToeJam_Earl
                 System.Diagnostics.Debug.WriteLine("Sneak Activated");
             }
             _gameManager.Update(gameTime);
+            _camera.Trail(_gameManager.Player.Bounds, new Vector2(1024, 768));
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            if (GameState.InMainMenu)
-            {
-                DrawMainMenu();
-                return;
-            }
+            //if (GameState.InMainMenu)
+            //{
+            //    DrawMainMenu();
+            //    return;
+            //}
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+            _spriteBatch.Begin(transformMatrix: _camera.GetViewMatrix(), samplerState: SamplerState.PointClamp);
             _tileManager.Draw(_spriteBatch);
             _gameManager.Draw();
             _spriteBatch.End();

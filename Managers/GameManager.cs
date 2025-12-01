@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using static GameObject;
 
 public class GameManager
 {
 	private Present _item;
-	private ToeJam _player;
+    private ToeJam _player;
+    public ToeJam Player => _player;
     private madDentist _enemy;
 	private Tornado _enemy1;
 	private Wiseman _npc;
@@ -12,17 +14,15 @@ public class GameManager
 	private UI _ui;
     //private InteractionManager _interactionManager;
 	private AudioManager _audioManager;
-	private CameraSystem _camera;
     //private SFXSystem SFX;
     private CollisionSystem _collisionSystem;
     private List<GameObject> _allObjects = new List<GameObject>();
     public void Init ()
 	{
         _audioManager = new AudioManager();
-		_camera = new CameraSystem(Vector2.Zero);
         //SFX = new SFXSystem();
         _item = new Present(new Rectangle(300, 300, 0, 0));
-		_player = new ToeJam(new Vector2(100, 100));
+        _player = new ToeJam(new Vector2(100, 100));
         _enemy = new madDentist(new Vector2(350, 300));
 		_enemy1 = new Tornado(new Vector2(500, 300), _player);
         _npc = new Wiseman(new Vector2(400, 300));
@@ -41,8 +41,6 @@ public class GameManager
 	public void Update(GameTime gameTime)
 	{
 		InputManager.Update();
-		_camera.Trail(_player.Bounds, new Vector2(1024, 768));
-
         if (!GameState.Paused)
 		{
 			foreach (var obj in _allObjects)
@@ -58,18 +56,19 @@ public class GameManager
     }
 	public void Draw()
 	{
-		Globals.SpriteBatch.Begin(transformMatrix: _camera.GetViewMatrix(), samplerState: SamplerState.PointClamp);
         _item.Draw(Globals.SpriteBatch);
 		_player.Draw(Globals.SpriteBatch);
         _enemy.Draw(Globals.SpriteBatch);
 		_enemy1.Draw(Globals.SpriteBatch);
         _npc.Draw(Globals.SpriteBatch);
 		_elevator.Draw(Globals.SpriteBatch);
-        Globals.SpriteBatch.End();
-
-        Globals.SpriteBatch.Begin();
         _ui.Draw(Globals.SpriteBatch);
-        Globals.SpriteBatch.End();
+
+        foreach (var obj in _allObjects)
+        {
+            if (!obj.IsActive) continue;
+                obj.Draw(Globals.SpriteBatch);
+        }
     }
     public void PauseAudio()
     {

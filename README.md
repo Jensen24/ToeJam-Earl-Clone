@@ -16,7 +16,7 @@
 ### https://docs.monogame.net/api/Microsoft.Xna.Framework.Media.MediaPlayer.html
 # AI/Collision Sources:
 ### https://docs.monogame.net/articles/tutorials/building_2d_games/12_collision_detection/index.html
-### https://youtu.be/z0YFFg_nBjw?si=P_NthNIB063tAZs8  3 part series where he guides on creating a quadtree w collision
+### https://youtu.be/z0YFFg_nBjw?si=P_NthNIB063tAZs8   3 part series where he guides on creating a quadtree w collision
 ### https://youtu.be/1oLl5JDwqG8?si=FF1b4MqlifmXgrW6  Collision 
 ### https://lisyarus.github.io/blog/posts/building-a-quadtree.html // Quadtree
 ### https://www.youtube.com/watch?v=phZRfEAuW7Q  Used mostly to learn how to implement IFrames  

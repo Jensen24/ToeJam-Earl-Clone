@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 using static GameObject;
 
 
@@ -12,8 +13,7 @@ public class ToeJam : Player
         Radius = 16f;
         ShapeType = CollisionShape.Circle;
         Texture2D toeJam = Globals.Content.Load<Texture2D>("ToeJam");
-
-		var idle = new List<Rectangle>
+        var idle = new List<Rectangle>
 		{
 			new Rectangle(15, 14, 22, 25),
             new Rectangle(46, 12, 22, 27),
