@@ -20,7 +20,7 @@ public class CharacterMenu
         _bg = new Rectangle(8, 8, 320, 224);
     }
 
-    public string? Update()
+    public string Update()
     {
         KeyboardState keyboard = Keyboard.GetState();
 
@@ -44,7 +44,7 @@ public class CharacterMenu
                 return "Earl";
         }
         _prevKeyboard = keyboard;
-        return null; 
+        return ""; 
     }
 
     public void Draw(SpriteBatch spriteBatch)

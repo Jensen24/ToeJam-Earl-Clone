@@ -60,7 +60,7 @@ namespace ToeJam_Earl
             // Main Menu
             if (_inMainMenu)
             {
-                string? result = _mainMenu.Update();
+                string result = _mainMenu.Update();
 
                 if (result == "Play")
                 {
@@ -77,7 +77,7 @@ namespace ToeJam_Earl
             }
             if (_inCharacterMenu)
             {
-                string? character = _characterMenu.Update();
+                string character = _characterMenu.Update();
 
                 if (character == "ToeJam" || character == "Earl")
                 {

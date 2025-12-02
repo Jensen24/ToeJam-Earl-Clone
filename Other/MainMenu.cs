@@ -22,7 +22,7 @@ public class MainMenu
         _bg = new Rectangle(8, 8, 320, 224);
     }
 
-	public string? Update()
+	public string Update()
 	{
         KeyboardState keyboard = Keyboard.GetState();
 
@@ -46,7 +46,7 @@ public class MainMenu
                 return "Quit";
         }
         _prevKeyboard = keyboard;
-        return null;
+        return "";
     }
 
 
