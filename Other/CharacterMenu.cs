@@ -10,8 +10,8 @@ public class CharacterMenu
     private Rectangle _bg;
     private string _TJtxt = "one player -- jus' toejam";
     private string _Etxt = "one player -- jus' earl";
-    private Vector2 _TJPos = new Vector2(400, 300);
-    private Vector2 _EPos = new Vector2(400, 360);
+    private Vector2 _TJPos = new Vector2(150, 300);
+    private Vector2 _EPos = new Vector2(150, 360);
     public CharacterMenu()
     {
         _font = Globals.Content.Load<SpriteFont>("TJEFont");
@@ -52,7 +52,7 @@ public class CharacterMenu
         spriteBatch.Draw(_mainMenu, destinationRectangle: new Rectangle(0, 0, 1024, 768), sourceRectangle: _bg, color: Color.White);
         spriteBatch.DrawString(_font, _TJtxt, _TJPos, Color.White);
         spriteBatch.DrawString(_font, _Etxt, _EPos, Color.White);
-        Vector2 fingerPos = ((_selectedIndex == 0) ? _TJPos + new Vector2(-60, -10) : _EPos + new Vector2(-60, -10));
+        Vector2 fingerPos = ((_selectedIndex == 0) ? _TJPos + new Vector2(-45, 12) : _EPos + new Vector2(-45, 12));
         spriteBatch.Draw(_mainMenu, position: fingerPos, sourceRectangle: _finger, color: Color.White);
     }
 }

@@ -11,8 +11,8 @@ public class MainMenu
     private Rectangle _bg;
     private string _playtxt = "Play";
     private string _quittxt = "Quit";
-    private Vector2 _playPos = new Vector2(400, 300);
-    private Vector2 _quitPos = new Vector2(400, 360);
+    private Vector2 _playPos = new Vector2(450, 300);
+    private Vector2 _quitPos = new Vector2(450, 360);
 
     public MainMenu()
 	{
@@ -55,7 +55,7 @@ public class MainMenu
         spriteBatch.Draw(_mainMenu, destinationRectangle: new Rectangle(0, 0, 1024, 768), sourceRectangle: _bg, color: Color.White);
         spriteBatch.DrawString(_font, _playtxt, _playPos, Color.White);
         spriteBatch.DrawString(_font, _quittxt, _quitPos, Color.White);
-        Vector2 fingerPos = ((_selectedIndex == 0) ? _playPos + new Vector2(-60, -10) : _quitPos + new Vector2(-60, -10));
+        Vector2 fingerPos = ((_selectedIndex == 0) ? _playPos + new Vector2(-45, 12) : _quitPos + new Vector2(-45, 12));
         spriteBatch.Draw(_mainMenu, position: fingerPos, sourceRectangle: _finger, color: Color.White);
 
     }

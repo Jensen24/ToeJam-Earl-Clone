@@ -15,6 +15,8 @@ namespace ToeJam_Earl
         private CharacterMenu _characterMenu;
         private bool _inMainMenu = true;
         private bool _inCharacterMenu = false;
+        private float _delayCounter = 0f;
+        private const float _delayTimer = 0.5f;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -66,6 +68,7 @@ namespace ToeJam_Earl
                 {
                     _inMainMenu = false;
                     _inCharacterMenu = true;
+                    _delayCounter = _delayTimer;
                     return;
                 }
                 else if (result == "Quit")
@@ -77,11 +80,16 @@ namespace ToeJam_Earl
             }
             if (_inCharacterMenu)
             {
+                // Slight delay to prevent accidental input carryover
+                if (_delayCounter > 0f)
+                {
+                    _delayCounter -= Globals.TotalSeconds;
+                    return;
+                }
                 string character = _characterMenu.Update();
-
                 if (character == "ToeJam" || character == "Earl")
                 {
-                    GameManager.StartGame(character);
+                    _gameManager.StartGame(character);
                     _inCharacterMenu = false;
                     return;
                 }
