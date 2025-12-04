@@ -1,7 +1,8 @@
 ﻿
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using static GameObject;
-
+// Future reminder for collision boxes: Red = Wobble near edge // Yellow = Decorations so Solid collision // Green = transition to previous level // Pink = Water so maybe animation for swimming then swim??
 namespace ToeJam_Earl
 {
     public class Game1 : Game
@@ -13,8 +14,10 @@ namespace ToeJam_Earl
         private CameraSystem _camera;
         private MainMenu _mainMenu;
         private CharacterMenu _characterMenu;
+        private PauseMenu _pauseMenu;
         private bool _inMainMenu = true;
         private bool _inCharacterMenu = false;
+        private bool _inPauseMenu = false;
         private float _delayCounter = 0f;
         private const float _delayTimer = 0.5f;
         public Game1()
@@ -33,6 +36,7 @@ namespace ToeJam_Earl
 
             Globals.Content = Content;
             _camera = new CameraSystem(Vector2.Zero);
+            _pauseMenu = new PauseMenu();
             _gameManager = new();
             _gameManager.Init();
 
@@ -108,6 +112,27 @@ namespace ToeJam_Earl
                 {
                     _gameManager.ResumeAudio();
                 }
+                return;
+            }
+            if (GameState.Paused)
+            {
+                string pauseResult = _pauseMenu.Update();
+
+                if (pauseResult == "Resume")
+                {
+                    GameState.TogglePause();
+                    _gameManager.ResumeAudio();
+                }
+                else if (pauseResult == "Quit")
+                {
+                    Exit();
+                }
+                return;
+            }
+            if (InputManager.TogglePresentsPressed)
+            {
+                GameState.TogglePresents();
+                return;
             }
             if (GameState.PresentsOpen)
             {
@@ -117,17 +142,16 @@ namespace ToeJam_Earl
                 if (InputManager.UsePresentPressed)
                     System.Diagnostics.Debug.WriteLine("Present Used");
 
-                if (InputManager.TogglePresentsPressed)
-                    GameState.TogglePresents();
-
-                    return;
+                return;
+            }
+            if (InputManager.ToggleMapPressed)
+            {
+                GameState.ToggleMap();
+                return;
             }
             if (GameState.MapOpen)
             {
-                if (InputManager.ToggleMapPressed)
-                    GameState.ToggleMap();
-
-                    return;
+                return;
             }
 
             if (InputManager.TogglePresentsPressed)
@@ -157,8 +181,7 @@ namespace ToeJam_Earl
                 _spriteBatch.End();
                 return;
             }
-
-            if (_inCharacterMenu)
+            else if (_inCharacterMenu)
             {
                 _characterMenu.Draw(_spriteBatch);
                 _spriteBatch.End();
@@ -167,9 +190,21 @@ namespace ToeJam_Earl
 
             _tileManager.Draw(_spriteBatch);
             _gameManager.Draw();
+
+            if (GameState.Paused)
+            {
+                _pauseMenu.Draw(_spriteBatch);
+            }
+            if (GameState.PresentsOpen)
+            {
+                // Draw Presents Menu
+            }
+            if (GameState.MapOpen)
+            {
+                // Draw Map
+            }
             _spriteBatch.End();
             base.Draw(gameTime);
-
         }
     }
 }
