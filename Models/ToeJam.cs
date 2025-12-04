@@ -5,7 +5,7 @@ using static GameObject;
 
 public class ToeJam : Player
 {
-    private float _speed = 200f;
+    private float _speed = 500f;
     private float _scale = 1.5f;
     private AnimationManager _anims = new();
 	public ToeJam(Vector2 startPos) : base(startPos)
