@@ -5,13 +5,17 @@ using static GameObject;
 public class UI
 {
     private AnimationManager _tjHud = new();
+    private AnimationManager _tjHP = new();
     private AnimationManager _eHud = new();
+    private AnimationManager _eHP = new();
     private AnimationManager _midSec = new();
     private AnimationManager _vacay = new();
     private Player _player;
     private Vector2 _tjHudPos = new Vector2(230, 720);
+    private Vector2 _tjHPPos = new Vector2(135, 740);
     private Vector2 _midSectionPos = new Vector2(512, 720);
     private Vector2 _eHudPos = new Vector2(790, 720);
+    private Vector2 _eHPPos = new Vector2(697, 740);
     private Vector2 _vactionHudPos = new Vector2(512, 720);
     public UI()
     {
@@ -36,8 +40,18 @@ public class UI
             new Rectangle(8, 48, 320, 32),
 
         };
+        var tjHP = new List<Rectangle>
+        {
+            new Rectangle(40, 109, 24, 3),
+        };
+        var eHP = new List<Rectangle>
+        {
+            new Rectangle(210, 109, 32, 3),
+        };
         _tjHud.AddAnimation("ToeJamHud", new Animation(ui, tjHud, 0.15f, new Vector2(3.2f, 3.2f)));
+        _tjHP.AddAnimation("ToeJamHP", new Animation(ui, tjHP, 0.15f, new Vector2(3.2f, 3.2f)));
         _eHud.AddAnimation("EarlHud", new Animation(ui, eHud, 0.15f, new Vector2(3.2f, 3.2f)));
+        _eHP.AddAnimation("EarlHP", new Animation(ui, eHP, 0.15f, new Vector2(3.2f, 3.2f)));
         _midSec.AddAnimation("MidSection", new Animation(ui, midSection, 0.15f, new Vector2(3.2f, 3.2f)));
         _vacay.AddAnimation("VactionHud", new Animation(ui, vactionHud, 0.15f, new Vector2(3.2f, 3.2f)));
     }
@@ -55,9 +69,11 @@ public class UI
         if (_player is ToeJam)
         {
             _tjHud.Update("ToeJamHud", gameTime);
+            _tjHP.Update("ToeJamHP", gameTime);
         }
         else if (_player is Earl)
             _eHud.Update("EarlHud", gameTime);
+            _eHP.Update("EarlHP", gameTime);
     }
 
     public void Draw(SpriteBatch spriteBatch)
@@ -68,10 +84,12 @@ public class UI
         if (_player is ToeJam)
         {
             _tjHud.Draw(spriteBatch, _tjHudPos);
+            _tjHP.Draw(spriteBatch, _tjHPPos);
         }
         else if (_player is Earl)
         {
             _eHud.Draw(spriteBatch, _eHudPos);
+            _eHP.Draw(spriteBatch, _eHPPos);
         }
 
     }
