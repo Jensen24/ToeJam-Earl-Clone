@@ -7,8 +7,6 @@ public class Present : Item
     // delete this later
     private SoundEffectInstance YoinkInstance;
     private float _scale = 1.5f;
-    private float _rotation = 0f;
-    private float _rotationSpeed = 2f;
     private AnimationManager _anims = new();
     public Present(Rectangle bounds) : base(bounds)
     {
@@ -37,13 +35,12 @@ public class Present : Item
     {
         if (!IsActive) return;
         _anims.Update("Idle", gameTime);
-        _rotation += _rotationSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
     }
 
     public override void Draw(SpriteBatch spriteBatch)
     {
         if (!IsActive) return;
-        _anims.Draw(spriteBatch, Position, _rotation);
+        _anims.Draw(spriteBatch, Position);
     }
     public virtual void OnCollection(Player p)
     {

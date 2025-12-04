@@ -37,8 +37,8 @@ public class GameManager
         {
             _player = new Earl(spawnPos);
         }
-        _allObjects.Add(_player);
 
+        _allObjects.Add(_player);
         _ui.SetPlayer(_player);
         _item = new Present(new Rectangle(300, 300, 0, 0));
         _enemy = new madDentist(new Vector2(350, 300));

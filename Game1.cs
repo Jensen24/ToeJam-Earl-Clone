@@ -95,6 +95,7 @@ namespace ToeJam_Earl
                 if (character == "ToeJam" || character == "Earl")
                 {
                     _gameManager.StartGame(character);
+                    _ui.SetPlayer(_gameManager.Player);
                     _inCharacterMenu = false;
                     return;
                 }
