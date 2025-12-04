@@ -3,35 +3,24 @@ using System.Collections.Generic;
 
 public class AnimationManager
 {
-    private Dictionary<object, Animation> _anims = new();
-    private object _lastFrame;
+    private Dictionary<string, Animation> _anims = new();
+    private Animation _currentAnimation;
 
-    public void AddAnimation(object frame, Animation animation)
+    public void AddAnimation(string key, Animation anim)
     {
-        _anims.Add(frame, animation);
-        _lastFrame ??= frame;
+        _anims[key] = anim;
     }
-    public void Update(object frame, GameTime gameTime)
+    public void Update(string key, GameTime gameTime)
     {
-        // hopefully this fixes tornado collisin pls
-        if (frame == null)
-            return;
-
-        if (_anims.TryGetValue(frame, out Animation anim))
+        if (_currentAnimation != _anims[key])
         {
-            anim.Start();
-            anim.Update();
-            _lastFrame = frame;
+            _currentAnimation = _anims[key];
+            _currentAnimation.Reset();
         }
-        else if (_lastFrame != null)
-        {
-            _anims[_lastFrame].Stop();
-            _anims[_lastFrame].Reset();
-        }
+        _currentAnimation.Update();
     }
-    public void Draw(SpriteBatch spriteBatch, Vector2 position, float rotation = 0f)
+    public void Draw(Vector2 position)
     {
-        if (_lastFrame != null)
-            _anims[_lastFrame].Draw(position, rotation);
+        _currentAnimation?.Draw(position);
     }
 }

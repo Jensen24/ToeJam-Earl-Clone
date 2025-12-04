@@ -15,9 +15,9 @@ namespace ToeJam_Earl
         private MainMenu _mainMenu;
         private CharacterMenu _characterMenu;
         private PauseMenu _pauseMenu;
+        private UI _ui;
         private bool _inMainMenu = true;
         private bool _inCharacterMenu = false;
-        private bool _inPauseMenu = false;
         private float _delayCounter = 0f;
         private const float _delayTimer = 0.5f;
         public Game1()
@@ -37,6 +37,7 @@ namespace ToeJam_Earl
             Globals.Content = Content;
             _camera = new CameraSystem(Vector2.Zero);
             _pauseMenu = new PauseMenu();
+            _ui = new UI();
             _gameManager = new();
             _gameManager.Init();
 
@@ -187,13 +188,19 @@ namespace ToeJam_Earl
                 _spriteBatch.End();
                 return;
             }
-
             _tileManager.Draw(_spriteBatch);
             _gameManager.Draw();
+            _spriteBatch.End();
+
+            _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+            _ui.Draw(_spriteBatch);
+            _spriteBatch.End();
 
             if (GameState.Paused)
             {
-                _pauseMenu.Draw(_spriteBatch);
+                _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+                _pauseMenu.Draw(_spriteBatch, GraphicsDevice.Viewport);
+                _spriteBatch.End();
             }
             if (GameState.PresentsOpen)
             {
@@ -203,7 +210,6 @@ namespace ToeJam_Earl
             {
                 // Draw Map
             }
-            _spriteBatch.End();
             base.Draw(gameTime);
         }
     }

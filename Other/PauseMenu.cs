@@ -10,8 +10,6 @@ public class PauseMenu
     private Rectangle _bg;
     private string _resumetxt = "Resume";
     private string _quittxt = "Quit";
-    private Vector2 _resumePos = new Vector2(450, 300);
-    private Vector2 _quitPos = new Vector2(450, 360);
 
     public PauseMenu()
     {
@@ -49,12 +47,15 @@ public class PauseMenu
     }
 
 
-    public void Draw(SpriteBatch spriteBatch)
+    public void Draw(SpriteBatch spriteBatch, Viewport viewport)
     {
-        spriteBatch.Draw(_pauseMenu, destinationRectangle: new Rectangle(0, 0, 1024, 768), sourceRectangle: _bg, color: Color.White);
+        spriteBatch.Draw(_pauseMenu, destinationRectangle: new Rectangle(0, 0, viewport.Width, viewport.Height), sourceRectangle: _bg, color: Color.White);
+        Vector2 menuCenter = new Vector2(viewport.Width / 2, viewport.Height / 2);
+        Vector2 _resumePos = menuCenter + new Vector2(-70, -20);
+        Vector2 _quitPos = menuCenter + new Vector2(-70, 40);
         spriteBatch.DrawString(_font, _resumetxt, _resumePos, Color.White);
         spriteBatch.DrawString(_font, _quittxt, _quitPos, Color.White);
-        Vector2 fingerPos = ((_selectedIndex == 0) ? _resumePos + new Vector2(-45, 12) : _quitPos + new Vector2(-45, 12));
+        Vector2 fingerPos = (_selectedIndex == 0) ? _resumePos + new Vector2(-45, 12) : _quitPos + new Vector2(-45, 12);
         spriteBatch.Draw(_pauseMenu, position: fingerPos, sourceRectangle: _finger, color: Color.White);
 
     }

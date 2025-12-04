@@ -39,13 +39,13 @@ public class GameManager
         }
         _allObjects.Add(_player);
 
+        _ui.SetPlayer(_player);
         _item = new Present(new Rectangle(300, 300, 0, 0));
         _enemy = new madDentist(new Vector2(350, 300));
         _enemy1 = new Tornado(new Vector2(500, 300), _player);
         _npc = new Wiseman(new Vector2(400, 300));
         _elevator = new Elevator(new Rectangle(450, 300, 0, 0));
 
-        _allObjects.Add(_player);
         _allObjects.Add(_enemy);
         _allObjects.Add(_enemy1);
         _allObjects.Add(_npc);
@@ -77,7 +77,6 @@ public class GameManager
 		_enemy1.Draw(Globals.SpriteBatch);
         _npc.Draw(Globals.SpriteBatch);
 		_elevator.Draw(Globals.SpriteBatch);
-        _ui.Draw(Globals.SpriteBatch);
 
         foreach (var obj in _allObjects)
         {
