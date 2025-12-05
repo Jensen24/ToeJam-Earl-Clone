@@ -10,22 +10,8 @@ namespace ToeJam_Earl
 {
     public class Game1 : Game
     {
-        // map start
-        private Dictionary<Vector2, int> collisions1;
-        private Dictionary<Vector2, int> dl1;
-        private Dictionary<Vector2, int> gl1;
-        private Dictionary<Vector2, int> wl1;
-        private Dictionary<Vector2, int> sl1;
-        private Texture2D WaterTexture;
-        private Texture2D RoadTexture;
-        private Texture2D AssetTexture;
-        private Texture2D SkyboxTexture;
-        private Texture2D DecosTexture;
-        private Texture2D CollisionTexture;
-        // map end
-
         private GameManager _gameManager;
-        //private TileManager _tileManager;
+        private TileManager _tileManager;
         private readonly GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private CameraSystem _camera;
@@ -42,40 +28,8 @@ namespace ToeJam_Earl
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            collisions1 = LoadMap("../../../Data/level1_collisions.csv");
-            dl1 = LoadMap("../../../Data/level1_dl.csv");
-            gl1 = LoadMap("../../../Data/level1_gl.csv");
-            wl1 = LoadMap("../../../Data/level1_wl.csv");
-            sl1 = LoadMap("../../../Data/level1_sl.csv"); ;
         }
-
-        private Dictionary<Vector2, int> LoadMap(string filepath)
-        {
-            Dictionary<Vector2, int> result = new();
-
-            StreamReader reader = new(filepath);
-
-            int y = 0;
-            string line;
-            while ((line = reader.ReadLine()) != null)
-            {
-                string[] items = line.Split(',');
-
-                for (int x = 0; x < items.Length; x++)
-                {
-                    if (int.TryParse(items[x], out int value))
-                    {
-                        if (value > -1)
-                        {
-                            result[new Vector2(x, y)] = value;
-                        }
-                    }
-                }
-                y++;
-            }
-            return result;
-        }
-        protected override void Initialize()
+         protected override void Initialize()
         {
 
             _graphics.PreferredBackBufferWidth = 1024;
@@ -86,8 +40,9 @@ namespace ToeJam_Earl
             _camera = new CameraSystem(Vector2.Zero);
             _pauseMenu = new PauseMenu();
             _ui = new UI();
+            _tileManager = new TileManager();
             _gameManager = new();
-            _gameManager.Init();
+            _gameManager.Init(_tileManager);
 
             base.Initialize();
         }
@@ -98,13 +53,17 @@ namespace ToeJam_Earl
             _mainMenu = new MainMenu();
             _characterMenu = new CharacterMenu();
             Globals.SpriteBatch = _spriteBatch;
-            // Load map textures
-            WaterTexture = Content.Load<Texture2D>("Water");
-            RoadTexture = Content.Load<Texture2D>("Roads");
-            AssetTexture = Content.Load<Texture2D>("Assets");
-            SkyboxTexture = Content.Load<Texture2D>("Skybox");
-            DecosTexture = Content.Load<Texture2D>("IslandDecos");
-            CollisionTexture = Content.Load<Texture2D>("CollisionBoxes");
+            _tileManager.LoadContent(Content);
+            // world 1 
+            _tileManager.LoadTileLayer(
+            "../../../Data/level1_collisions.csv",
+            "../../../Data/level1_dl.csv",
+            "../../../Data/level1_gl.csv",
+            "../../../Data/level1_wl.csv",
+            "../../../Data/level1_sl.csv");
+            // world 2
+            // world 3
+            // world 4
         }
 
         protected override void Update(GameTime gameTime)
@@ -240,122 +199,8 @@ namespace ToeJam_Earl
                 _spriteBatch.End();
                 return;
             }
+            _tileManager.Draw(_spriteBatch);
             _gameManager.Draw();
-
-            int display_tile_size = 64;
-            int pixel_tile_size = 16;
-            int num_tiles_per_row;
-            num_tiles_per_row = SkyboxTexture.Width / pixel_tile_size;
-            foreach (var item in sl1)
-            {
-                var drect = new Rectangle(
-                    (int)item.Key.X * display_tile_size,
-                    (int)item.Key.Y * display_tile_size,
-                    display_tile_size,
-                    display_tile_size
-                    );
-                int index = item.Value;
-                int x = index % num_tiles_per_row;
-                int y = index / num_tiles_per_row;
-
-                var src = new Rectangle(
-                    x * pixel_tile_size,
-                    y * pixel_tile_size,
-                    pixel_tile_size,
-                    pixel_tile_size
-                    );
-                _spriteBatch.Draw(SkyboxTexture, drect, src, Color.White);
-            }
-
-            num_tiles_per_row = WaterTexture.Width / pixel_tile_size;
-            foreach (var item in wl1)
-            {
-                var drect = new Rectangle(
-                    (int)item.Key.X * display_tile_size,
-                    (int)item.Key.Y * display_tile_size,
-                    display_tile_size,
-                    display_tile_size
-                    );
-                int index = item.Value;
-                int x = index % num_tiles_per_row;
-                int y = index / num_tiles_per_row;
-
-                var src = new Rectangle(
-                    x * pixel_tile_size,
-                    y * pixel_tile_size,
-                    pixel_tile_size,
-                    pixel_tile_size
-                    );
-
-                _spriteBatch.Draw(WaterTexture, drect, src, Color.White);
-            }
-
-            num_tiles_per_row = AssetTexture.Width / pixel_tile_size;
-            foreach (var item in gl1)
-            {
-                var drect = new Rectangle(
-                    (int)item.Key.X * display_tile_size,
-                    (int)item.Key.Y * display_tile_size,
-                    display_tile_size,
-                    display_tile_size
-                    );
-                int index = item.Value;
-                int x = index % num_tiles_per_row;
-                int y = index / num_tiles_per_row;
-
-                var src = new Rectangle(
-                    x * pixel_tile_size,
-                    y * pixel_tile_size,
-                    pixel_tile_size,
-                    pixel_tile_size
-                    );
-
-                _spriteBatch.Draw(AssetTexture, drect, src, Color.White);
-            }
-
-            num_tiles_per_row = DecosTexture.Width / pixel_tile_size;
-            foreach (var item in dl1)
-            {
-                var drect = new Rectangle(
-                    (int)item.Key.X * display_tile_size,
-                    (int)item.Key.Y * display_tile_size,
-                    display_tile_size,
-                    display_tile_size
-                    );
-                int index = item.Value;
-                int x = index % num_tiles_per_row;
-                int y = index / num_tiles_per_row;
-
-                var src = new Rectangle(
-                    x * pixel_tile_size,
-                    y * pixel_tile_size,
-                    pixel_tile_size,
-                    pixel_tile_size
-                    );
-                _spriteBatch.Draw(DecosTexture, drect, src, Color.White);
-            }
-
-            num_tiles_per_row = CollisionTexture.Width / pixel_tile_size;
-            foreach (var item in collisions1)
-            {
-                var drect = new Rectangle(
-                    (int)item.Key.X * display_tile_size,
-                    (int)item.Key.Y * display_tile_size,
-                    display_tile_size,
-                    display_tile_size
-                    );
-                int tileIndex = item.Value;
-                int x = tileIndex % num_tiles_per_row;
-                int y = tileIndex / num_tiles_per_row;
-
-                var src = new Rectangle(
-                    x * pixel_tile_size,
-                    y * pixel_tile_size,
-                    pixel_tile_size,
-                    pixel_tile_size
-                    );
-                _spriteBatch.Draw(CollisionTexture, drect, src, Color.White * 0.2f);
-            }
             _spriteBatch.End();
 
             _spriteBatch.Begin(samplerState: SamplerState.PointClamp);

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using static GameObject;
 
 public class CollisionSystem
@@ -11,7 +12,7 @@ public class CollisionSystem
 		_quadtree = new Quadtree(0, _worldBounds);
 	}
 
-	public void Update(List<GameObject> allObjects)
+	public void Update(List<GameObject> allObjects, TileManager tileManager)
 	{
 		_quadtree.Clear();
 
@@ -21,24 +22,59 @@ public class CollisionSystem
             if (obj != null && obj.IsActive)
 				_quadtree.insert(obj);
 		}
+		// Active tiles are registered
+		foreach (var tile in tileManager.AllCollisionTiles)
+				_quadtree.insert(tile);
 
-		foreach (var obj in allObjects)
+        foreach (var obj in allObjects)
 		{
 			if (obj == null || !obj.IsActive || !obj.IsCollidable) continue;
+            bool touchedEffectTile = false;
+            if (obj is Player player)
+            {
+                List<GameObject> nearbyObjects = new List<GameObject>();
+                _quadtree.Retrieve(nearbyObjects, player);
 
-			List<GameObject> possibleCollisions = new List<GameObject>();
-			_quadtree.Retrieve(possibleCollisions, obj);
+                foreach (var other in nearbyObjects)
+                {
+                    if (other == null) continue;
+                    if (player == null) continue;
+                    if (!other.IsCollidable || !other.IsActive) continue;
 
-			foreach (var other in possibleCollisions)
-			{
-				if (other == null) continue;
-				if (other == obj) continue;
-				if (!other.IsActive || !other.IsCollidable) continue;
-				if (CheckCollision(obj, other))
-				{
-					HandleCollision(obj, other);
-				}
-			}
+                    if (CheckCollision(player, other))
+                    {
+                        if (other is Tile tile)
+                        {
+                            if (HandleTileCollision(player, tile))
+                                touchedEffectTile = true;
+                        }
+                        else
+                        {
+                            HandleCollision(player, other);
+                        }
+                    }
+                }
+                if (!touchedEffectTile)
+                {
+                    player.ApplyTileEffect(TileEffectState.None, player.FacingDirection);
+                }
+                else
+                {
+                    List<GameObject> possibleCollisions = new List<GameObject>();
+                    _quadtree.Retrieve(possibleCollisions, obj);
+
+                    foreach (var other in possibleCollisions)
+                    {
+                        if (other == null) continue;
+                        if (other == obj) continue;
+                        if (!other.IsActive || !other.IsCollidable) continue;
+                        if (CheckCollision(obj, other))
+                        {
+                            HandleCollision(obj, other);
+                        }
+                    }
+                }
+            }
 		}
 	}
 
@@ -72,29 +108,49 @@ public class CollisionSystem
 		Vector2 center = new Vector2(c.Bounds.Center.X, c.Bounds.Center.Y);
 		float radius = c.Bounds.Width * 0.5f;
 
-		float closestX = MathHelper.Clamp(center.X, r.Bounds.Left, r.Bounds.Right);
-		float closestY = MathHelper.Clamp(center.Y, r.Bounds.Top, r.Bounds.Bottom);
+        float closestX = MathHelper.Clamp(center.X, r.Bounds.Left, r.Bounds.Right);
+        float closestY = MathHelper.Clamp(center.Y, r.Bounds.Top, r.Bounds.Bottom);
 
-		float dx = center.X - closestX;
-		float dy = center.Y - closestY;
+        float dx = center.X - closestX;
+        float dy = center.Y - closestY;
 
-		return (dx * dx + dy * dy) < (radius * radius);
+        return (dx * dx + dy * dy) < (radius * radius);
     }
+	private bool HandleTileCollision(Player player, Tile tile)
+	{
+        if (tile.Type == TileType.Solid)
+        {
+            Rectangle playerBounds = player.Bounds;
+            Rectangle tileBounds = tile.Bounds;
+            Vector2 halt = Vector2.Zero;
 
-	private void HandleCollision(GameObject a, GameObject b)
+            float overlapX = Math.Min(playerBounds.Right - tileBounds.Left, tileBounds.Right - playerBounds.Left);
+            float overlapY = Math.Min(playerBounds.Bottom - tileBounds.Top, tileBounds.Bottom - playerBounds.Top);
+            if (overlapX < overlapY)
+                halt.X = player.Position.X < tile.Position.X ? -overlapX : overlapX;
+            else 
+                halt.Y = player.Position.Y < tile.Position.Y ? -overlapY : overlapY;
+            player.Position += halt;
+            player.Velocity = Vector2.Zero;
+            return true;
+        }
+        if (tile.Type == TileType.EdgeWobble)
+        {
+            player.ApplyTileEffect(TileEffectState.EdgeWobble, player.FacingDirection);
+            return true;
+        }
+        if (tile.Type == TileType.Water)
+        {
+            player.ApplyTileEffect(TileEffectState.WaterSwim, player.FacingDirection);
+            return true;
+        }
+        return false;
+    }
+    private void HandleCollision(GameObject a, GameObject b)
 	{
 		if (a is Player && b is Tile)
 		{
-            // Add collision response
-			// accomadate for leaning over edge // colliding with hard object (tree ,etx)
-            ((Player)a).Velocity = Vector2.Zero;
-			return;
-        }
-        if (b is Player && a is Tile)
-        {
-            // Add collision response
-            // accomadate for leaning over edge // colliding with hard object (tree ,etx)
-            ((Player)b).Velocity = Vector2.Zero;
+            HandleTileCollision((Player)a, (Tile)b);
             return;
         }
         if (a is Player && b is Item)
@@ -106,17 +162,6 @@ public class CollisionSystem
                 present.OnCollection((Player)a);
             }
             // b.IsActive = false;
-            // add to inventory // play sfx (if any)
-            return;
-        }
-        if (b is Player  && a is Item)
-        {
-            System.Diagnostics.Debug.WriteLine($"{a.GetType().Name} collided with {b.GetType().Name}");
-            if (a is Present present)
-            {
-				System.Diagnostics.Debug.WriteLine($"{b.GetType().Name} collected a {a.GetType().Name}!");
-                present.OnCollection((Player)b);
-            }
             // add to inventory // play sfx (if any)
             return;
         }
@@ -148,12 +193,6 @@ public class CollisionSystem
 			// trigger dialogue system // play sfx (if any)
 			return;
 
-        }
-		if (b is Player && a is NPC)
-		{
-			// some enemies you can interact with via button press. This would open dialogue system // shop
-			// trigger dialogue system // play sfx (if any)
-			return;
         }
         // Expand on this: enemy v tile, npc v tile
     }

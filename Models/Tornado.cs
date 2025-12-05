@@ -152,11 +152,9 @@ public class Tornado : Enemy
         _captureTimer = _captureDuration;
 
         if (player is ToeJam)
-            // might need to switch to _anims.Play if glitchy
             _anims.Update("Capture ToeJam", new GameTime());
         else
             _anims.Update("Capture Earl", new GameTime());
-
         player.StartTornadoCapture();
     }
 

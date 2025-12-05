@@ -9,7 +9,7 @@ public enum CollisionShape
 public abstract class GameObject
 {
     protected Vector2 _position;
-    public Vector2 Position { get => _position; protected set => _position = value; }
+    public Vector2 Position { get => _position; set => _position = value; }
     public int Width { get; protected set; }
     public int Height { get; protected set; }
     public float Radius { get; protected set; }
@@ -38,7 +38,7 @@ public abstract class GameObject
     public virtual void Draw(SpriteBatch spriteBatch) { }
     public abstract class Entity : GameObject
     {
-        public Vector2 Velocity;
+        public Vector2 Velocity { get; set; } = Vector2.Zero;
         public Entity(Vector2 startPos) : base(startPos)
         {
             ShapeType = CollisionShape.Circle;
@@ -46,7 +46,7 @@ public abstract class GameObject
         }
         public override void Update(GameTime gameTime)
         {
-            _position += Velocity * (float)Globals.TotalSeconds;
+            //_position += Velocity * (float)Globals.TotalSeconds;
         }
     }
     public class NPC : Entity
@@ -60,6 +60,9 @@ public abstract class GameObject
     public class Player : Entity
     {
         SoundEffect Hurt = Globals.Content.Load<SoundEffect>("Yeouch! (ToeJam)");
+        public bool InputLocked { get; set; } = false;
+        public TileEffectState CurrentEffect { get; protected set; } = TileEffectState.None;
+        public Vector2 FacingDirection { get; protected set; }
         private bool IsInvincible = false;
         private float InvincibilityTimer = 0f;
         private const float InvincibilityDuration = 1.5f;
@@ -73,6 +76,11 @@ public abstract class GameObject
             Hurt.Play();
             // Add health reduction
         }
+        public virtual void ApplyTileEffect(TileEffectState effect, Vector2 direction)
+        {
+            CurrentEffect = effect;
+            FacingDirection = direction;
+        }
 
         // primarily for tornado displacement
         public void Relocate(Vector2 newPos)
@@ -83,12 +91,14 @@ public abstract class GameObject
         public void StartTornadoCapture()
         {
             Velocity = Vector2.Zero;
+            InputLocked = true;
             IsActive = false;
         }
 
         public void EndTornadoCapture()
         {
             // hp drain
+            InputLocked = false;
             IsActive = true;
         }
 
@@ -125,4 +135,4 @@ public abstract class GameObject
                 ShapeType = CollisionShape.Rectangle;
             }
         }
-    }
+}

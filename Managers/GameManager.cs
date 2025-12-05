@@ -14,9 +14,11 @@ public class GameManager
 	private UI _ui;
 	private AudioManager _audioManager;
     private CollisionSystem _collisionSystem;
+    private TileManager _tileManager;
     private List<GameObject> _allObjects = new List<GameObject>();
-    public void Init ()
+    public void Init (TileManager tileManager)
 	{
+        _tileManager = tileManager;
         _audioManager = new AudioManager();
 		_ui = new UI();
         _collisionSystem = new CollisionSystem(new Rectangle(0, 0, 1024, 768));
@@ -25,7 +27,7 @@ public class GameManager
 
     public void StartGame(string character)
     {
-        Vector2 spawnPos = new Vector2(100, 100);
+        Vector2 spawnPos = new Vector2(1000, 1000);
         // defense
         _allObjects.Clear();
 
@@ -64,7 +66,7 @@ public class GameManager
                     continue;
 				obj.Update(gameTime);
 			}
-            _collisionSystem.Update(_allObjects);
+            _collisionSystem.Update(_allObjects, _tileManager);
             _elevator.Update(gameTime);
         }
         _ui.Update(gameTime);

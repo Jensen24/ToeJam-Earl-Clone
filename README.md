@@ -23,12 +23,14 @@
 ### https://www.youtube.com/watch?v=a3n9JZVeTTo  Same reason as the video above
 ### https://www.youtube.com/watch?v=tZgEXWleWxg  Was going to originally have random pathing, but this guys implementation was too cool to not try and recreate
 ### https://stackoverflow.com/questions/66516450/enemy-pathfinding-through-waypoints-with-unity this comment helped with code behind traversing the waypoints
-### Also shoutout monogames auto fill in, almost did all of FollowZPath() for me lol
 # General Sources:
 ###  Game Programming Algorithms and Techniques: A Platform-Agnostic Approach (Game Design) written by Sanjay Madhav
 ### https://docs.monogame.net/articles/tutorials/building_2d_games/
 ### Numerous slides provided by Mr Hendrickson
+### Props to Visual Studio's auto fill-in, helped all across the board
 ### https://www.deviantart.com/supercommanderwolfy/art/Dirt-Water-Tiles-001-265584789 Water assets
 ### https://www.youtube.com/watch?v=QymPLfOsv2M&t=311s Camera 
 ### https://www.youtube.com/watch?v=hUpmfQAZt80 Font Implementation
 ### https://fontstruct.com/fontstructions/show/2218129/toejam-earl-variant-1-mono-2-1 Main Menu Font
+### https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.concat?view=net-10.0 Concat and IEnumerable
+### https://stackoverflow.com/questions/14164974/how-to-concatenate-two-ienumerablet-into-a-new-ienumerablet#:~:text=The%20Concat%20method%20will%20return,contents%20of%20A%20and%20B). ^^^
