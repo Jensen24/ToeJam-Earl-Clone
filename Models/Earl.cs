@@ -4,15 +4,17 @@ using static GameObject;
 
 public class Earl : Player
 {
-    // lower speed by 15% // raise health by %15
-    // private float health 230f;
+    // Player stats
     private float _speed = 170f;
+    private float SubmergedMulti = 0.8f;
+
     private float _scale = 1.5f;
-    private float SubmergedMulti = 0.9f;
     private AnimationManager _anims = new();
     private TileEffectState _currentEffect = TileEffectState.None;
     public Earl(Vector2 startPos) : base(startPos)
     {
+        MaxHealth = 230f;
+        Health = MaxHealth;
         Radius = 16f;
         ShapeType = CollisionShape.Circle;
         Texture2D earl = Globals.Content.Load<Texture2D>("Earl");

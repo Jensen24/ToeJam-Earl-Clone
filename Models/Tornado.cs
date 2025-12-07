@@ -23,6 +23,7 @@ public class Tornado : Enemy
     private readonly float _alertDuration = 3f;
     private readonly float _captureDuration = 5f;
     private float _speed = 50f;
+    private float _damage = 40f;
     private float _scale = 1.5f;
     private AnimationManager _anims = new();
 

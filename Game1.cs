@@ -53,6 +53,8 @@ namespace ToeJam_Earl
             _mainMenu = new MainMenu();
             _characterMenu = new CharacterMenu();
             Globals.SpriteBatch = _spriteBatch;
+            Globals.GraphicsDevice = GraphicsDevice;
+            _ui.LoadContent();
             _tileManager.LoadContent(Content);
             // world 1 
             _tileManager.LoadTileLayer(

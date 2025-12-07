@@ -24,6 +24,7 @@
 ### https://www.youtube.com/watch?v=tZgEXWleWxg  Was going to originally have random pathing, but this guys implementation was too cool to not try and recreate
 ### https://stackoverflow.com/questions/66516450/enemy-pathfinding-through-waypoints-with-unity this comment helped with code behind traversing the waypoints
 ### https://www.reddit.com/r/monogame/comments/12j8zha/how_do_you_guys_manage_your_game_objectsentities/#:~:text=I%20made%20a%20platformer%20and,of%20bullets%20and%20so%20on. Specific comment that helped with safely adding/removing objects (Ship Pieces)
+### https://www.youtube.com/watch?v=gLvhyQbm0iU Health Bar Implementation / Management
 # General Sources:
 ###  Game Programming Algorithms and Techniques: A Platform-Agnostic Approach (Game Design) written by Sanjay Madhav
 ### https://docs.monogame.net/articles/tutorials/building_2d_games/

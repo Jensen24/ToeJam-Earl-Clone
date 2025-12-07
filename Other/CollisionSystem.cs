@@ -186,7 +186,7 @@ public class CollisionSystem
             Enemy enemy = (Enemy)b;
 
             System.Diagnostics.Debug.WriteLine($"{player.GetType().Name} collided with {enemy.GetType().Name}");
-            player.OnCollision(enemy);
+            player.TakeDamage(50f);
 
             if (enemy is Tornado tornado)
             {

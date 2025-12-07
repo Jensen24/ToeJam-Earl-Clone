@@ -55,11 +55,14 @@ public abstract class GameObject
     }
     public class Enemy : Entity
     {
+        public float Damage { get; protected set; } = 30f;
         protected Enemy(Vector2 position) : base(position) { }
     }
     public class Player : Entity
     {
         SoundEffect Hurt = Globals.Content.Load<SoundEffect>("Yeouch! (ToeJam)");
+        public float MaxHealth { get; protected set; } = 100f;
+        public float Health { get; protected set; } = 100f;
         public bool InputLocked { get; set; } = false;
         public TileEffectState CurrentEffect { get; protected set; } = TileEffectState.None;
         public Vector2 FacingDirection { get; protected set; }
@@ -67,14 +70,15 @@ public abstract class GameObject
         private float InvincibilityTimer = 0f;
         private const float InvincibilityDuration = 1.5f;
         public Player(Vector2 position) : base(position) { }
-        public virtual void OnCollision(Enemy e)
+        public virtual void TakeDamage(float damage)
         {
             if (IsInvincible) return;
+            Health -= damage;
+            if (Health < 0f) Health = 0f;
             IsInvincible = true;
             InvincibilityTimer = InvincibilityDuration;
             IsCollidable = false;
             Hurt.Play();
-            // Add health reduction
         }
         public virtual void ApplyTileEffect(TileEffectState effect, Vector2 direction)
         {

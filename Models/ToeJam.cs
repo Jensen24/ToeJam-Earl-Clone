@@ -4,15 +4,18 @@ using static GameObject;
 
 public class ToeJam : Player
 {
-    //private float health 170f;
-    private float _speed = 230f;
+    // player variables
+    private float _speed = 630f;
     //private float RoadBoostMulti = 1.1f;
     private float SubmergedMulti = 0.9f;
     private float _scale = 1.5f;
+
     private AnimationManager _anims = new();
     private TileEffectState _currentEffect = TileEffectState.None;
 	public ToeJam(Vector2 startPos) : base(startPos)
     {
+        MaxHealth = 200f;
+        Health = MaxHealth;
         Radius = 16f;
         ShapeType = CollisionShape.Circle;
         Texture2D toeJam = Globals.Content.Load<Texture2D>("ToeJam");
