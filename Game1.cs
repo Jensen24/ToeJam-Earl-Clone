@@ -42,7 +42,7 @@ namespace ToeJam_Earl
             _ui = new UI();
             _tileManager = new TileManager();
             _gameManager = new();
-            _gameManager.Init(_tileManager);
+            _gameManager.Init(_tileManager, _ui);
 
             base.Initialize();
         }

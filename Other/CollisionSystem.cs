@@ -144,6 +144,17 @@ public class CollisionSystem
             player.ApplyTileEffect(TileEffectState.WaterSwim, player.FacingDirection);
             return true;
         }
+        if (tile.Type == TileType.LevelTransition)
+        {
+            // if you step out of bounds, the game force closes lol
+            System.Diagnostics.Debug.WriteLine("You Fell out of Bounds! Try Again Next Playthrough!");
+            Environment.Exit(0);
+        }
+        //if (tile.Type == TileType.RoadBoost)
+        //{
+        //    player.ApplyTileEffect(TileEffectState.RoadBoost, player.FacingDirection);
+        //    return true;
+        //}
         return false;
     }
     private void HandleCollision(GameObject a, GameObject b)
@@ -161,8 +172,12 @@ public class CollisionSystem
                 System.Diagnostics.Debug.WriteLine($"{a.GetType().Name} collected a {b.GetType().Name}!");
                 present.OnCollection((Player)a);
             }
-            // b.IsActive = false;
-            // add to inventory // play sfx (if any)
+            else if (b is ShipPiece shipPiece)
+            {
+                System.Diagnostics.Debug.WriteLine($"{a.GetType().Name} collected a {b.GetType().Name}!");
+                shipPiece.OnCollected((Player)a);
+            }
+            // add to inventory 
             return;
         }
         if (a is Player && b is Enemy)

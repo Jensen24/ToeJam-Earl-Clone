@@ -12,6 +12,7 @@ public class TileManager
     private Dictionary<Vector2, int> collisions1;
     private Dictionary<Vector2, int> dl1;
     private Dictionary<Vector2, int> gl1;
+    public Dictionary<Vector2, int> groundLayer => gl1;
     private Dictionary<Vector2, int> wl1;
     private Dictionary<Vector2, int> sl1;
     private Texture2D WaterTexture;
@@ -96,7 +97,7 @@ public class TileManager
         }
         return result;
     }
-    public IEnumerable<Tile> AllCollisionTiles => 
+    public IEnumerable<Tile> AllCollisionTiles =>
         SolidTiles.Values
         .Concat(EdgeTiles.Values)
         .Concat(WaterTiles.Values)
@@ -213,7 +214,7 @@ public class TileManager
                 pixel_tile_size,
                 pixel_tile_size
                 );
-            spriteBatch.Draw(CollisionTexture, drect, src, Color.White * 0.2f);
+            spriteBatch.Draw(CollisionTexture, drect, src, Color.White * 0f);
         }
     }
 

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using static GameObject
+using static GameObject;
 
 
 
@@ -35,6 +35,8 @@ public class ShipPiece : Item
     {
 		YoinkInstance.Play();
 		IsActive = false;
+        _shipPiecemanager.OnPieceCollected();
+        _shipPiecemanager._gameManager.RemoveObject(this);
     }
     public override void Update(GameTime gameTime)
     {

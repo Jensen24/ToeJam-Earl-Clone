@@ -2,16 +2,12 @@
 using System.Collections.Generic;
 using static GameObject;
 
-public enum TileEffectState
-{
-    None,
-    EdgeWobble,
-    WaterSwim
-}
-
 public class ToeJam : Player
 {
-    private float _speed = 500f;
+    //private float health 170f;
+    private float _speed = 230f;
+    //private float RoadBoostMulti = 1.1f;
+    private float SubmergedMulti = 0.9f;
     private float _scale = 1.5f;
     private AnimationManager _anims = new();
     private TileEffectState _currentEffect = TileEffectState.None;
@@ -220,6 +216,11 @@ public class ToeJam : Player
         if (inputDir != Vector2.Zero)
         {
             float moveSpeed = sneaking ? _speed * 0.5f : _speed;
+            //if (_currentEffect == TileEffectState.RoadBoost)
+            //    moveSpeed *= RoadBoostMulti;
+            if (_currentEffect == TileEffectState.WaterSwim)
+                moveSpeed *= SubmergedMulti;
+
             Vector2 moveDir = Vector2.Normalize(inputDir);
             Velocity = moveDir * moveSpeed;
         }
