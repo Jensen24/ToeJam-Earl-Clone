@@ -45,10 +45,10 @@ public class Animation
             _frame = (_frame + 1) % _frames;
         }
     }
-    public void Draw(Vector2 pos)
+    public void Draw(Vector2 pos, SpriteEffects effects = SpriteEffects.None)
     {
         Rectangle src = _sourceRectangles[_frame];
         Vector2 origin = new(src.Width / 2f, src.Height / 2f);
-        Globals.SpriteBatch.Draw(_texture, pos, _sourceRectangles[_frame], Color.White, 0, origin, _scale, SpriteEffects.None, 1);
+        Globals.SpriteBatch.Draw(_texture, pos, _sourceRectangles[_frame], Color.White, 0, origin, _scale, effects, 1);
     }
 }

@@ -51,7 +51,7 @@ public class AnimationManager
     }
     // extenstion to support string frames (UI)
     public void Update(string frame, GameTime gameTime) => Update((object)frame, gameTime);
-    public void Draw(SpriteBatch spriteBatch, Vector2 position)
+    public void Draw(SpriteBatch spriteBatch, Vector2 position, SpriteEffects effects = SpriteEffects.None)
     {
         if (_currentFrame == null)
             return;
@@ -59,6 +59,6 @@ public class AnimationManager
         if (!_anims.TryGetValue(_currentFrame, out var anim))
             return;
         
-        anim.Draw(position);
+        anim.Draw(position, effects);
     }
 }

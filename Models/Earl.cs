@@ -5,7 +5,7 @@ using static GameObject;
 public class Earl : Player
 {
     // Player stats
-    private float _speed = 170f;
+    private float _speed = 180f;
     private float SubmergedMulti = 0.8f;
 
     private float _scale = 1.5f;

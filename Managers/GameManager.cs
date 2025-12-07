@@ -46,11 +46,11 @@ public class GameManager
 
         _allObjects.Add(_player);
         _ui.SetPlayer(_player);
-        _item = new Present(new Rectangle(300, 300, 0, 0));
-        _enemy = new madDentist(new Vector2(350, 300));
+        _item = new Present(new Rectangle(1400, 1000, 0, 0),);
+        _enemy = new madDentist(new Vector2(3000, 1600), _player);
         _enemy1 = new Tornado(new Vector2(2000, 3300), _player);
         _npc = new Wiseman(new Vector2(400, 300));
-        _elevator = new Elevator(new Rectangle(450, 300, 0, 0));
+        _elevator = new Elevator(new Rectangle(1200, 1000, 0, 0));
         _shipPieceManager = new ShipPieceManager(_tileManager, this);
 
         _allObjects.Add(_shipPiece);

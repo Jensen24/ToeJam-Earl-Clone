@@ -23,7 +23,6 @@ public class Tornado : Enemy
     private readonly float _alertDuration = 3f;
     private readonly float _captureDuration = 5f;
     private float _speed = 50f;
-    private float _damage = 40f;
     private float _scale = 1.5f;
     private AnimationManager _anims = new();
 
@@ -57,10 +56,10 @@ public class Tornado : Enemy
         _anims.AddAnimation("Capture Earl", new Animation(tornado, Earl, 0.15f, new Vector2(_scale, _scale)));
         _player = player;
 
-        float pointOne = 312; 
-        float pointTwo = 712; 
-        float pointThree = 284; 
-        float pointFour = 484; 
+        float pointOne = 1000; 
+        float pointTwo = 1800; 
+        float pointThree = 2200; 
+        float pointFour = 3400; 
         ZPath = new List<Vector2>()
         {
             new Vector2(pointOne, pointThree), // top Left of Z

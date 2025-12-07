@@ -5,7 +5,7 @@ using static GameObject;
 public class ToeJam : Player
 {
     // player variables
-    private float _speed = 630f;
+    private float _speed = 240f;
     //private float RoadBoostMulti = 1.1f;
     private float SubmergedMulti = 0.9f;
     private float _scale = 1.5f;

@@ -17,6 +17,8 @@ public class UI
     private AnimationManager _levelLow = new();
     private AnimationManager _levelMid = new();
     private AnimationManager _levelHigh = new();
+    private AnimationManager _eLives= new();
+    private AnimationManager _tjLives = new();
     //private AnimationManager _midNumbers = new();
     private Player _player;
     private Texture2D _hpTexture;
@@ -31,6 +33,8 @@ public class UI
     private Vector2 _tjIconPos = new Vector2(47, 725);
     private Vector2 _elevelPos = new Vector2(900, 705);
     private Vector2 _tjlevelPos = new Vector2(360, 705);
+    private Vector2 _tjLivesPos = new Vector2(325, 735);
+    private Vector2 _eLivesPos = new Vector2(865, 735);
     private int _shipPartsCollected = 0;
     private SpriteFont _font;
     public UI()
@@ -85,6 +89,14 @@ public class UI
         {
             new Rectangle(200, 144, 56, 8),
         };
+        var tjStar = new List<Rectangle>
+        {
+            new Rectangle(97, 163, 5, 4),
+        };
+        var eStar = new List<Rectangle>
+        {
+            new Rectangle(97, 171, 5, 4),
+        };
         //var zero = new List<Rectangle> { new Rectangle(9, 186, 14, 14), };
         //var one = new List<Rectangle> { new Rectangle(35, 186, 11, 14), };
         //var two = new List<Rectangle> { new Rectangle(58, 186, 13, 14), };
@@ -109,6 +121,9 @@ public class UI
         _levelLow.AddAnimation("LevelLow", new Animation(ui, expLow, 0.15f, new Vector2(3.2f, 3.2f)));
         _levelMid.AddAnimation("LevelMid", new Animation(ui, expMid, 0.15f, new Vector2(3.2f, 3.2f)));
         _levelHigh.AddAnimation("LevelHigh", new Animation(ui, expHigh, 0.15f, new Vector2(3.2f, 3.2f)));
+        // star
+        _tjLives.AddAnimation("ToeJamLives", new Animation(ui, tjStar, 0.15f, new Vector2(3.2f, 3.2f)));
+        _eLives.AddAnimation("EarlLives", new Animation(ui, eStar, 0.15f, new Vector2(3.2f, 3.2f)));
 
         // Numbers for ship parts collected
         //_midNumbers.AddAnimation("0", new Animation(ui, zero, 0.15f, new Vector2(3.2f, 3.2f)));
@@ -180,6 +195,12 @@ public class UI
                 _levelMid.Draw(spriteBatch, _tjlevelPos);
             else
                 _levelHigh.Draw(spriteBatch, _tjlevelPos);
+            // Lives
+            for (int i = 0; i < tj.Lives; i++)
+            {
+                Vector2 lifePos = _tjLivesPos + new Vector2(i * 20, 0);
+                _tjLives.Draw(spriteBatch, lifePos);
+            }
         }
         else if (_player is Earl e)
         {
@@ -198,7 +219,12 @@ public class UI
                 _levelMid.Draw(spriteBatch, _elevelPos);
             else
                 _levelHigh.Draw(spriteBatch, _elevelPos);
-
+            // Lives
+            for (int i = 0; i < e.Lives; i++)
+            {
+                Vector2 lifePos = _eLivesPos + new Vector2(i * 20, 0);
+                _eLives.Draw(spriteBatch, lifePos);
+            }
         }
     }
 }

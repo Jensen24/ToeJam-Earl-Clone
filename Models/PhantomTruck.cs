@@ -38,15 +38,6 @@ public class PhantomTruck : Enemy
             new Rectangle(298, 8, 51, 48),
             new Rectangle(370, 9, 51, 47),
         };
-        var walkRight = new List<Rectangle>
-        {
-            new Rectangle(8, 10, 51, 46),
-            new Rectangle(79, 13, 52, 43),
-            new Rectangle(152, 18, 51, 38),
-            new Rectangle(224, 14, 51, 42),
-            new Rectangle(298, 8, 51, 48),
-            new Rectangle(370, 9, 51, 47),
-        };
         var idle = new List<Rectangle>
         {
             new Rectangle(313, 79, 32, 41),
@@ -60,7 +51,6 @@ public class PhantomTruck : Enemy
         _anims.AddAnimation("Down", new Animation(truck, walkDown, 0.20f, new Vector2(_scale, _scale)));
         _anims.AddAnimation("Up", new Animation(truck, walkUp, 0.20f, new Vector2(_scale, _scale)));
         _anims.AddAnimation("Left", new Animation(truck, walkLeft, 0.20f, new Vector2(_scale, _scale)));
-        _anims.AddAnimation("Right", new Animation(truck, walkRight, 0.20f, new Vector2(_scale, _scale)));
     }
 
     public override void Update(GameTime gameTime)

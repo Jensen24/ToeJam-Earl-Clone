@@ -6,9 +6,11 @@ public class Present : Item
 {
     private SoundEffectInstance YoinkInstance;
     private float _scale = 1.5f;
+    private PresentManager _pManager;
     private AnimationManager _anims = new();
-    public Present(Rectangle bounds) : base(bounds)
+    public Present(Rectangle bounds, PresentManager pManager) : base(bounds)
     {
+        _pManager = pManager;
         SoundEffect Yoink = Globals.Content.Load<SoundEffect>("PickUp");
         YoinkInstance = Yoink.CreateInstance();
         YoinkInstance.Volume = 1f;
@@ -44,5 +46,6 @@ public class Present : Item
     {
         YoinkInstance.Play();
         IsActive = false;
+        _pManager.OnPresentCollected(p);
     }
 }

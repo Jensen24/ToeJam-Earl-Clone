@@ -30,13 +30,6 @@ public class Devil : Enemy
             new Rectangle(104, 56, 32, 22),
             new Rectangle(152, 54, 32, 24),
         };
-        var walkRight = new List<Rectangle>
-        {
-            new Rectangle(8, 54, 32, 24),
-            new Rectangle(57, 52, 31, 26),
-            new Rectangle(104, 56, 32, 22),
-            new Rectangle(152, 54, 32, 24),
-        };
         var idle = new List<Rectangle>
         {
             new Rectangle(11, 149, 26, 25),
@@ -47,7 +40,6 @@ public class Devil : Enemy
         _anims.AddAnimation("Down", new Animation(devil, walkDown, 0.20f, new Vector2(_scale, _scale)));
         _anims.AddAnimation("Up", new Animation(devil, walkUp, 0.20f, new Vector2(_scale, _scale)));
         _anims.AddAnimation("Left", new Animation(devil, walkLeft, 0.20f, new Vector2(_scale, _scale)));
-        _anims.AddAnimation("Right", new Animation(devil, walkRight, 0.20f, new Vector2(_scale, _scale)));
     }
 
     public override void Update(GameTime gameTime)

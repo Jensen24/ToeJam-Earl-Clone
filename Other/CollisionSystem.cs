@@ -193,7 +193,10 @@ public class CollisionSystem
                 System.Diagnostics.Debug.WriteLine($"{player.GetType().Name} is being captured by Tornado!");
                 tornado.StartCapture(player);
             }
-            return;
+            else if (enemy is madDentist dentist)
+            {
+                dentist.StartCooldown();
+            }
         }
         if (b is Player && a is Enemy)
         {

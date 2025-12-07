@@ -40,15 +40,6 @@ public class MowerMan : Enemy
             new Rectangle(268, 70, 56, 42),
             new Rectangle(330, 69, 60, 43),
         };
-        var walkRight = new List<Rectangle>
-        {
-            new Rectangle(11, 73, 58, 39),
-            new Rectangle(74, 71, 60, 41),
-            new Rectangle(138, 70, 61, 42),
-            new Rectangle(202, 72, 60, 40),
-            new Rectangle(268, 70, 56, 42),
-            new Rectangle(330, 69, 60, 43),
-        };
         var idle = new List<Rectangle>
         {
             new Rectangle(20, 127, 25, 49),
@@ -63,7 +54,6 @@ public class MowerMan : Enemy
         _anims.AddAnimation("Down", new Animation(mowMan, walkDown, 0.20f, new Vector2(_scale, _scale)));
         _anims.AddAnimation("Up", new Animation(mowMan, walkUp, 0.20f, new Vector2(_scale, _scale)));
         _anims.AddAnimation("Left", new Animation(mowMan, walkLeft, 0.20f, new Vector2(_scale, _scale)));
-        _anims.AddAnimation("Right", new Animation(mowMan, walkRight, 0.20f, new Vector2(_scale, _scale)));
     }
 
     public override void Update(GameTime gameTime)

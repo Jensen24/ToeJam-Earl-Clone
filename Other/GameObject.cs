@@ -63,22 +63,38 @@ public abstract class GameObject
         SoundEffect Hurt = Globals.Content.Load<SoundEffect>("Yeouch! (ToeJam)");
         public float MaxHealth { get; protected set; } = 100f;
         public float Health { get; protected set; } = 100f;
+        public int Lives { get; protected set; } = 3;
         public bool InputLocked { get; set; } = false;
         public TileEffectState CurrentEffect { get; protected set; } = TileEffectState.None;
         public Vector2 FacingDirection { get; protected set; }
         private bool IsInvincible = false;
         private float InvincibilityTimer = 0f;
         private const float InvincibilityDuration = 1.5f;
-        public Player(Vector2 position) : base(position) { }
+        public Player(Vector2 position) : base(position) { Health = MaxHealth; }
         public virtual void TakeDamage(float damage)
         {
             if (IsInvincible) return;
             Health -= damage;
-            if (Health < 0f) Health = 0f;
+            if (Health < 0f)
+                LoseLife();
             IsInvincible = true;
             InvincibilityTimer = InvincibilityDuration;
             IsCollidable = false;
             Hurt.Play();
+        }
+        public void LoseLife()
+        {
+            Lives--;
+            if (Lives > 0)
+            {
+                Health = MaxHealth;
+                Position = new Vector2(1000, 1000); // respawn position
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("You ran out of lives! Try again next time!");
+                Environment.Exit(0);
+            }
         }
         public virtual void ApplyTileEffect(TileEffectState effect, Vector2 direction)
         {
