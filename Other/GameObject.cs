@@ -82,6 +82,13 @@ public abstract class GameObject
             IsCollidable = false;
             Hurt.Play();
         }
+        public void Heal(float amount)
+        {
+            Health += amount;
+
+            if (Health > MaxHealth)
+                Health = MaxHealth;
+        }
         public void LoseLife()
         {
             Lives--;

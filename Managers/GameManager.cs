@@ -15,6 +15,7 @@ public class GameManager
 	private UI _ui;
 	private AudioManager _audioManager;
     private ShipPieceManager _shipPieceManager;
+    private PresentManager _presentManager;
     private CollisionSystem _collisionSystem;
     private TileManager _tileManager;
     private List<GameObject> _addObjects = new();
@@ -46,18 +47,18 @@ public class GameManager
 
         _allObjects.Add(_player);
         _ui.SetPlayer(_player);
-        _item = new Present(new Rectangle(1400, 1000, 0, 0),);
         _enemy = new madDentist(new Vector2(3000, 1600), _player);
         _enemy1 = new Tornado(new Vector2(2000, 3300), _player);
         _npc = new Wiseman(new Vector2(400, 300));
         _elevator = new Elevator(new Rectangle(1200, 1000, 0, 0));
         _shipPieceManager = new ShipPieceManager(_tileManager, this);
+        _presentManager = new PresentManager(_tileManager, this);
+
 
         _allObjects.Add(_shipPiece);
         _allObjects.Add(_enemy);
         _allObjects.Add(_enemy1);
         _allObjects.Add(_npc);
-        _allObjects.Add(_item);
         _allObjects.Add(_elevator);
     }
 	public void Update(GameTime gameTime)
@@ -93,7 +94,6 @@ public class GameManager
     }
 	public void Draw()
 	{
-        _item.Draw(Globals.SpriteBatch);
 		_player.Draw(Globals.SpriteBatch);
         _enemy.Draw(Globals.SpriteBatch);
 		_enemy1.Draw(Globals.SpriteBatch);

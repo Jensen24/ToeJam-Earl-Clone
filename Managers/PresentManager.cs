@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using static GameObject;
 
 public class PresentManager
 {
     private TileManager _tileManager;
     public GameManager _gameManager;
     private List<Vector2> _availableSpots = new();
-    private ShipPiece _currentPresent;
+    private Present _currentPresent;
     private int _tileSize = 64;
     private float _healAmount = 65f;
-    public ShipPieceManager(TileManager tileManager, GameManager gameManager)
+    public PresentManager(TileManager tileManager, GameManager gameManager)
     {
         _tileManager = tileManager;
         _gameManager = gameManager;
@@ -29,14 +30,12 @@ public class PresentManager
     }
     public void OnPresentCollected(Player player)
     {
-        player.Health += _healAmount;
-        if (player.Health > player.MaxHealth)
-            player.Health = player.MaxHealth;
+        player.Heal(_healAmount);
 
-        if (_currentPiece != null)
-            _gameManager.RemoveObject(_currentPiece);
+        if (_currentPresent != null)
+            _gameManager.RemoveObject(_currentPresent);
 
-        _currentPiece = null;
+        _currentPresent = null;
         SpawnNextPresent();
     }
 
